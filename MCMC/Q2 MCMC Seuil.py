@@ -1,7 +1,6 @@
 import numpy as np
 import numpy.random as npr
 import  matplotlib.pyplot as plt
-import time
 
 ###############################################################################
 ## Q2. Splitting + MCMC : trouver les seuils pour une valeur de P0, p, lambda, T
@@ -119,7 +118,6 @@ while(a[-1] > niveau-1):
     
     minP = np.zeros(n)
     for n_chain in np.arange(n):
-        
         TimeJumps1.append(PathPoisson[0])
         JumpSizes1.append(PathPoisson[1])
         minP[n_chain] = min(P0+np.concatenate([np.arange(1),np.cumsum(fusion(TimeJumps1[-1], JumpSizes1[-1], np.sort(TimeJump2[interval2[n_chain]:interval2[n_chain+1]]), JumpSize2[n_chain])[1])]))
@@ -138,25 +136,26 @@ while(a[-1] > niveau-1):
         
         # Processus candidat à être la nouvelle valeur de la chaine
         NewPathPoisson=fusion(JumpTimeConserve,JumpSizeConserve,NewTimeJump,NewJumpSize)
-        NewPathPoisson.append(P0+np.cumsum(np.concatenate([np.arange(1),NewPathPoisson[1]])))
-        
+                
         # Acceptation-rejet de ce candidat
-        NewPrice = NewPathPoisson[-1]
+        NewPrice = P0+np.concatenate([np.arange(1),np.cumsum(fusion(NewPathPoisson[0], NewPathPoisson[1], np.sort(TimeJump2[interval2[n_chain]:interval2[n_chain+1]]), JumpSize2[n_chain])[1])])
         if min(NewPrice)<=a[-1]:    # on accepte
-            PathPoisson = NewPathPoisson    # mise à jour de la chaine
+            NewPathPoisson.extend([np.sort(TimeJump2[interval2[n_chain]:interval2[n_chain+1]]), JumpSize2[n_chain]])   
+            PathPoisson = NewPathPoisson # mise à jour de la chaine
         
     a.append(np.sort(minP)[int(ratio*n)])
 
     # Valeur initiale de la chaîne
-    argmin=np.argwhere(minP<=a[-1]) # indice des chaînes potentielles
-    index=npr.choice(argmin.reshape(argmin.size)) # choix au hasard d'un indice
-    TimeJump=TimeJumps[index] # Temps de sauts 
-    JumpSize=JumpSizes[index] # Taille de sauts
-    Price=P0+np.cumsum(np.concatenate([np.arange(0),JumpSize])) # prix initiaux
+    argmin=np.argwhere(minP<=a[-1])                                         # indice des chaînes potentielles
+    index=npr.choice(argmin.reshape(argmin.size))                           # choix au hasard d'un indice
+    TimeJump1=TimeJumps1[index]                                             # Temps de sauts 
+    TimeJump2 = np.sort(TimeJump2[interval2[index]:interval2[index+1]])     # Temps de sauts (2)
+    JumpSize1=JumpSizes1[index]                                             # Taille de sauts
+    JumpSize2 = JumpSize2[index]                                            # Taille de sauts
 
-    PathPoissonInit=[TimeJump,JumpSize,Price] # Chaîne initiale
+    PathPoissonInit=[TimeJump1, JumpSize1, TimeJump2, JumpSize2]            # Chaîne initiale
 
 a[-1]=niveau-1
 
-TempsFin = time.time()
+print("Valeur des seuils : {}".format(a))
 

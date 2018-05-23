@@ -1,7 +1,6 @@
 import numpy as np
 import numpy.random as npr
 import  matplotlib.pyplot as plt
-import time
 
 ###############################################################################
 ## Splitting + MCMC : trouver les seuils pour une valeur de P0, p, lambda, T
@@ -105,10 +104,9 @@ while(a[-1] > niveau-1):
         NewTimeJump = np.sort(T*np.random.uniform(0,1,NbrAjoute))
         NewJumpSize = npr.choice(val,size=NbrAjoute,p=prob)
         # Processus candidat à être la nouvelle valeur de la chaine
-        NewPathPoisson=fusion(JumpTimeConserve,JumpSizeConserve,NewTimeJump,NewJumpSize)
-        NewPathPoisson.append(P0+np.cumsum(np.concatenate([np.arange(1),NewPathPoisson[1]])))
+        NewPathPoisson = fusion(JumpTimeConserve,JumpSizeConserve,NewTimeJump,NewJumpSize)
+        NewPrice = P0+np.cumsum(np.concatenate([np.arange(1),NewPathPoisson[1]]))
         # Acceptation-rejet de ce candidat
-        NewPrice = NewPathPoisson[-1]
         if min(NewPrice)<=a[-1]:    # on accepte
             PathPoisson = NewPathPoisson    # mise à jour de la chaine
         
@@ -124,5 +122,5 @@ while(a[-1] > niveau-1):
 
 a[-1]=niveau-1
 
-TempsFin = time.time()
+print("Valeur des seuils : {}".format(a))
 
