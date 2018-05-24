@@ -26,7 +26,7 @@ prob = np.concatenate([p[::-1],p])
 ## Paramètre seuil
 p = 0.7             #taux de conservation des sauts pour le processus de Markov
 ratio = 0.1         #objectif pour les seuils : P(X in A_(k+1)|X in A_k) = ratio
-n = 500             #nombre de simulations
+n = 1000             #nombre de simulations
 niveau = 0          # On cherche à calculer P(min P_t < niveau)
 
 ## Fonction auxilliaire 
@@ -57,7 +57,10 @@ def fusion(t1,j1,t2,j2):
         s+=1
     return([newT,newJ])
     
-
+# Génération d'un array de taille n dont les éléments alternent entre j0 et -j0
+def oscillator(j0,n):
+    return np.array([j0*(-1)**i for i in np.arange(n)])
+    
 ##----------
 # NIVEAU 1
 ##----------
@@ -66,38 +69,36 @@ def fusion(t1,j1,t2,j2):
 NbrJump1 = npr.poisson(T*la1,n)
 NbrJump2 = npr.poisson(T*la2,n)
 
-# Temps de sauts sur [0,T], pour toutes les chaînes
-TimeJump1 = T*np.random.uniform(0,1,size=np.sum(NbrJump1))
-TimeJump2 = T*np.random.uniform(0,1,size=np.sum(NbrJump2))
-
 # Taille des sauts pour toutes les chaînes (1)
 JumpSize1 = npr.choice(val,size=np.sum(NbrJump1),p=prob)
-
-def oscillator(j0,n):
-    return np.array([j0*(-1)**i for i in np.arange(n)])
 
 # Génération des chaînes (2)
 JumpSize2 = npr.choice([-1,1],size=n)
 JumpSize2 = [oscillator(JumpSize2[i],NbrJump2[i]) for i in np.arange(n)]
 
-
-# Calcul des prix min pour chaque chaîne
+# Temps de sauts sur [0,T], pour toutes les chaînes
 interval1 = np.cumsum(np.concatenate([np.arange(1), NbrJump1]))
 interval2 = np.cumsum(np.concatenate([np.arange(1), NbrJump2]))
 
+TimeJump1 = T*np.random.uniform(0,1,size=np.sum(NbrJump1))
+TimeJump2 = T*np.random.uniform(0,1,size=np.sum(NbrJump2))
 
-minP=np.array([min(P0+np.concatenate([np.arange(1),np.cumsum(fusion(np.sort(TimeJump1[interval1[i]:interval1[i+1]]), JumpSize1[interval1[i]:interval1[i+1]], np.sort(TimeJump2[interval2[i]:interval2[i+1]]), JumpSize2[i])[1])])) for i in np.arange(n)])
+TimeJump1 = [np.sort(TimeJump1[interval1[i]:interval1[i+1]]) for i in np.arange(n)]
+TimeJump2 = [np.sort(TimeJump2[interval2[i]:interval2[i+1]]) for i in np.arange(n)]
+
+# Calcul des Prix min pour les n chaînes
+minP=np.array([min(P0+np.concatenate([np.arange(1),np.cumsum(fusion(TimeJump1[i], JumpSize1[interval1[i]:interval1[i+1]], TimeJump2[i], JumpSize2[i])[1])])) for i in np.arange(n)])
 
 # Premier seuil a1
 a = [np.sort(minP)[int(ratio*n)]]
 
 # Valeur initiale de la chaîne
 argmin = np.argwhere(minP<=a[-1])                                     # indice des chaînes potentielles
-index = npr.choice(argmin.reshape(argmin.size))                       # choix au hasard d'un indice
-TimeJump1 = np.sort(TimeJump1[interval1[index]:interval1[index+1]])   # Temps de sauts (1)
-TimeJump2 = np.sort(TimeJump2[interval2[index]:interval2[index+1]])   # Temps de sauts (2)
-JumpSize1 = JumpSize1[interval1[index]:interval1[index+1]]            # Taille de sauts
-JumpSize2 = JumpSize2[index]                                          # Taille de sauts
+index = npr.choice(argmin.reshape(argmin.size))               # choix au hasard d'un indice
+TimeJump1 = TimeJump1[index]                                  # Temps de sauts (1)
+TimeJump2 = TimeJump2[index]                                  # Temps de sauts (2)
+JumpSize1 = JumpSize1[interval1[index]:interval1[index+1]]    # Taille de sauts
+JumpSize2 = JumpSize2[index]                                  # Taille de sauts
 
 PathPoissonInit=[TimeJump1,JumpSize1,TimeJump2,JumpSize2]             # Chaîne initiale
 
@@ -128,7 +129,7 @@ while(a[-1] > niveau-1):
         JumpSizeConserve=PathPoisson[1][Conserve]
         
         # Combien en ajoute-t-on
-        NbrAjoute = np.random.poisson((1-p)*la*T)
+        NbrAjoute = np.random.poisson((1-p)*la1*T)
         
         # Instants de sauts ajoutés
         NewTimeJump = np.sort(T*np.random.uniform(0,1,NbrAjoute))
@@ -138,8 +139,8 @@ while(a[-1] > niveau-1):
         NewPathPoisson=fusion(JumpTimeConserve,JumpSizeConserve,NewTimeJump,NewJumpSize)
                 
         # Acceptation-rejet de ce candidat
-        NewPrice = P0+np.concatenate([np.arange(1),np.cumsum(fusion(NewPathPoisson[0], NewPathPoisson[1], np.sort(TimeJump2[interval2[n_chain]:interval2[n_chain+1]]), JumpSize2[n_chain])[1])])
-        if min(NewPrice)<=a[-1]:    # on accepte
+        NewPrice = min(P0+np.concatenate([np.arange(1),np.cumsum(fusion(NewPathPoisson[0], NewPathPoisson[1], np.sort(TimeJump2[interval2[n_chain]:interval2[n_chain+1]]), JumpSize2[n_chain])[1])]))
+        if NewPrice<=a[-1]:    # on accepte
             NewPathPoisson.extend([np.sort(TimeJump2[interval2[n_chain]:interval2[n_chain+1]]), JumpSize2[n_chain]])   
             PathPoisson = NewPathPoisson # mise à jour de la chaine
         

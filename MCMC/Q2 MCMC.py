@@ -2,36 +2,36 @@ import numpy as np
 import numpy.random as npr
 import  matplotlib.pyplot as plt
 import time
-
 ###############################################################################
-## Splitting + MCMC pour un seul run de l'algo et une seule valeur de p
+## Q2. Splitting + MCMC pour un seul run de l'algo et une seule valeur de p
 ###############################################################################
 plt.close()
 
-P0 = 35
-T=4*3600
-la = 1/300
+P0 = 10
+T = 4*3600
+la1 = 1/660
+la2 = 1/110
 
-N=[1,3]
-P=[[1/2],[1/4,1/6,1/12]]
+N = [1,3]
+P = [[1/2], [1/4,1/6,1/12]]
 
 i=0
 
-m=N[i]
-p=P[i]
+m = N[i]
+p = P[i]
 
-val=np.delete(np.arange(-m,m+1),m)
-prob=np.concatenate([p[::-1],p])
+val = np.delete(np.arange(-m,m+1),m)
+prob = np.concatenate([p[::-1],p])
 
 ## Paramètre seuil
-K=6
 #p,M=0.1,int(8e4)
 #p,M=0.5,int(1e4)
 p,M=0.7,int(8e4)
 
 # calcul des seuils successifs
-BoundSplit = P0*(1-((np.arange(K,dtype=float)+1)**(1/2)/K**(1/2)))-1
-BoundSplit=[24, 18.0, 14.0, 8.0, 6.0, 3.0, 1.0, -1]
+#K=6
+#BoundSplit = P0*(1-((np.arange(K,dtype=float)+1)**(1/2)/K**(1/2)))-1
+BoundSplit=[8,5,2, -1]
 K=len(BoundSplit)
 print("Les seuils successifs envisagés pour le splitting sont \t")
 print(BoundSplit); print("\n")
@@ -39,8 +39,9 @@ print(BoundSplit); print("\n")
 
 TempsDepart = time.time()
 
-print("Lorsque p = "+ str(p) +" et lambda = " + str(la))   
+print("Lorsque p = "+ str(p) +" et lambda1 = " + str(la1) + ", lambda2 = "+str(la2))   
 plt.clf()
+
 ## Fonction auxilliaire 
 # à partir de 2 array de temps de sauts t1 et t2 et 2 arrays de taille de sauts j1 et j2 -> retourne l'array des temps de sauts ordonnés et la l'array des valeurs des sauts associés.
 
@@ -68,69 +69,110 @@ def fusion(t1,j1,t2,j2):
                 i+=1
         s+=1
     return([newT,newJ])
+
+# Génération d'un array de taille n dont les éléments alternent entre j0 et -j0
+def oscillator(j0,n):
+    return np.array([j0*(-1)**i for i in np.arange(n)])
+
 ##----------
 # NIVEAU 1
 ##----------
-# Nombre de sauts sur [0,T], par points de la chaîne
-NbrJump = npr.poisson(lam=la*T,size=(1,M))
-Frequence = np.zeros(M+1,dtype=float)
-#Boucle pour simuler la chaine de Markov
 print("\t Chaine 1 sur "+ str(K))
 
-for n_chain in np.arange(M):
-    # nombre de sauts du processus de Poisson courant
-    jj = NbrJump[0,n_chain]
-    TimeJump = np.sort(T*np.random.uniform(0,1,size=jj))
-    JumpSize=npr.choice(val,size=jj,p=prob)
-    minPrice=min(P0+np.cumsum(np.concatenate([np.arange(1),JumpSize])))
-    # on met a jour l'estimateur
-    if minPrice<=BoundSplit[0]:
-        # on augmente le compteur
-        Frequence[n_chain+1] = Frequence[n_chain]+1
-        # on stocke ce point de la chaîne comme possible point de départ pour la chaine suivante
-        PathPoissonInit = [TimeJump,JumpSize]
-    else: 
-        # on ne change pas le compteur
-        Frequence[n_chain+1] = Frequence[n_chain]
+# Nombre de sauts sur [0,T], par points de la chaîne
+NbrJump1 = npr.poisson(T*la1,M)
+NbrJump2 = npr.poisson(T*la2,M)
+
+# Taille des sauts pour toutes les chaînes (1)
+JumpSize1 = npr.choice(val,size=np.sum(NbrJump1),p=prob)
+
+# Génération des chaînes (2)
+JumpSize2 = npr.choice([-1,1],size=M)
+JumpSize2 = [oscillator(JumpSize2[i],NbrJump2[i]) for i in np.arange(M)]
+
+# Temps de sauts sur [0,T], pour toutes les chaînes
+interval1 = np.cumsum(np.concatenate([np.arange(1), NbrJump1]))
+interval2 = np.cumsum(np.concatenate([np.arange(1), NbrJump2]))
+
+TimeJump1 = T*np.random.uniform(0,1,size=np.sum(NbrJump1))
+TimeJump2 = T*np.random.uniform(0,1,size=np.sum(NbrJump2))
+
+TimeJump1 = [np.sort(TimeJump1[interval1[i]:interval1[i+1]]) for i in np.arange(M)]
+TimeJump2 = [np.sort(TimeJump2[interval2[i]:interval2[i+1]]) for i in np.arange(M)]
+
+# Calcul des Prix min pour les M chaînes
+minP=np.array([min(P0+np.concatenate([np.arange(1),np.cumsum(fusion(TimeJump1[i], JumpSize1[interval1[i]:interval1[i+1]], TimeJump2[i], JumpSize2[i])[1])])) for i in np.arange(M)])
+
+# Valeur initiale de la chaîne
+argmin = np.argwhere(minP<=BoundSplit[0])                     # indice des chaînes potentielles
+index = npr.choice(argmin.reshape(argmin.size))               # choix au hasard d'un indice
+TimeJump1 = TimeJump1[index]                                  # Temps de sauts (1)
+TimeJump2 = TimeJump2[index]                                  # Temps de sauts (2)
+JumpSize1 = JumpSize1[interval1[index]:interval1[index+1]]    # Taille de sauts
+JumpSize2 = JumpSize2[index]                                  # Taille de sauts
+
+PathPoissonInit=[TimeJump1,JumpSize1,TimeJump2,JumpSize2]     # Chaîne initiale
+
 #Affichage de l'estimateur de la proba pour ce niveau
-ProbaEnd = Frequence[-1]/M
+Frequence=np.concatenate([np.arange(1),np.cumsum(minP<=BoundSplit[0])/np.arange(1,M+1)])
+ProbaEnd = Frequence[-1]
 print ("\t Pour le niveau 1, la proba estimée est " + str(ProbaEnd))
+
 # Visualisation de la consistance de l'estimateur
 plt.figure(1)
-plt.plot(Frequence/(np.arange(M+1)+1), label="niveau 1") 
-#plt.show()
+plt.plot(Frequence, label="niveau 1") 
 
 ## BOUCLE pour les AUTRES NIVEAUX
 for n_level in (1+np.arange(K-1)):
     print("\t Chaine "+ str(n_level+1) + " sur " +str(K))
+    PathPoisson = PathPoissonInit
+    TimeJumps1 = []
+    JumpSizes1 = []
+        
+    # Génération des chaînes (2) 
+    NbrJump2 = npr.poisson(T*la2,M)
+    JumpSize2 = npr.choice([-1,1],size=M)
+    JumpSize2 = [oscillator(JumpSize2[i],NbrJump2[i]) for i in np.arange(M)]
+    interval2 = np.cumsum(np.concatenate([np.arange(1), NbrJump2]))
+    TimeJump2 = T*np.random.uniform(0,1,size=np.sum(NbrJump2))
+    TimeJump2 = [np.sort(TimeJump2[interval2[i]:interval2[i+1]]) for i in np.arange(M)]
+
     Frequence = np.zeros(M+1,dtype=float)
     RateAccept = np.zeros(M+1,dtype=float)
-    PathPoisson = PathPoissonInit
     MinPath = np.zeros(M+1,dtype=float)
-    MinPath[0] = min(P0+np.cumsum(np.concatenate([np.arange(1),PathPoisson[1]])))
+    MinPath[0] = minP[index]
+    
     for n_chain in np.arange(M):
-        # Nombre de sauts dans le processus courant
-        J = len(PathPoisson[0])
-        # Quels sauts sont conserves
+        TimeJumps1.append(PathPoisson[0])
+        JumpSizes1.append(PathPoisson[1])
+        
+        # Quels sauts sont conserves dans la première chaîne
         Conserve=np.random.uniform(0,1,size=PathPoisson[0].size)<=p
         JumpTimeConserve = PathPoisson[0][Conserve]
-        JumpSizeConserve = PathPoisson[1][Conserve]
-        # Combien en ajoute-t-on
-        NbrAjoute = np.random.poisson((1-p)*la*T)
-        # Instants de sauts ajoutés
+        JumpSizeConserve=PathPoisson[1][Conserve]
+        
+        # Combien en ajoute-t-on dans la première chaîne
+        NbrAjoute = np.random.poisson((1-p)*la1*T)
+        
+        # Instants et tailles de sauts ajoutés dans la première chaîne
         NewTimeJump = np.sort(T*np.random.uniform(0,1,NbrAjoute))
         NewJumpSize = npr.choice(val,size=NbrAjoute,p=prob)
+        
         # Processus candidat à être la nouvelle valeur de la chaine
-        NewPathPoisson = fusion(JumpTimeConserve,JumpSizeConserve,NewTimeJump,NewJumpSize)
+        NewPathPoisson=fusion(JumpTimeConserve,JumpSizeConserve,NewTimeJump,NewJumpSize)
+                
         # Acceptation-rejet de ce candidat
-        NewPrice = min(P0+np.cumsum(np.concatenate([np.arange(1),NewPathPoisson[1]])))
-        if NewPrice<=BoundSplit[n_level-1]:    # on accepte
-            PathPoisson = NewPathPoisson    # mise à jour de la chaine
-            MinPath[n_chain+1] = NewPrice    # stockage valeur minimale
+        NewPrice = min(P0+np.concatenate([np.arange(1),np.cumsum(fusion(NewPathPoisson[0], NewPathPoisson[1], TimeJump2[n_chain], JumpSize2[n_chain])[1])]))
+        
+        if NewPrice <= BoundSplit[n_level-1]:    # on accepte
             RateAccept[n_chain+1] = RateAccept[n_chain]+1   # update du taux d'acceptation-rejet
+            MinPath[n_chain+1]=NewPrice
+            NewPathPoisson.extend([TimeJump2[n_chain], JumpSize2[n_chain]])   
+            PathPoisson = NewPathPoisson # mise à jour de la chaine
         else:       # on refuse
             MinPath[n_chain+1] = MinPath[n_chain]   #   stockage valeur minimale
             RateAccept[n_chain+1] = RateAccept[n_chain] # update du taux d'acceptation-rejet
+        
         # Calcul de l'estimateur de la probabilité
         if MinPath[n_chain+1]<=BoundSplit[n_level]:
             Frequence[n_chain+1] = Frequence[n_chain]+1
@@ -172,4 +214,3 @@ plt.show()
 # Calcul de l'estimateur 
 print("\n La proba de ruine estimée est " + str(ProbaEnd) +"\n")
 print("(un IC sera donné dans le programme suivant)")
-

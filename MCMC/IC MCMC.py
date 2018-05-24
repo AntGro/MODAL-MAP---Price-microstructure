@@ -43,7 +43,35 @@ BoundSplit = P0*(1-((np.arange(K,dtype=float)+1)**(1/2)/K**(1/2)))-1
 print("les seuils successifs envisagés pour le splitting sont \t")
 print(BoundSplit)
 
+## Fonction auxilliaire 
+# à partir de 2 array de temps de sauts t1 et t2 et 2 arrays de taille de sauts j1 et j2 -> retourne l'array des temps de sauts ordonnés et la l'array des valeurs des sauts associés.
 
+def fusion(t1,j1,t2,j2):
+    newT, newJ = np.zeros(t1.size+t2.size), np.zeros(t1.size+t2.size)
+    i, j=0, 0
+    s=0
+    while(i<t1.size or j<t2.size):
+        if (i == t1.size):
+            newT[s:]=t2[j:]
+            newJ[s:]=j2[j:]
+            j=t2.size
+        elif(j == t2.size):
+            newT[s:]=t1[i:]
+            newJ[s:]=j1[i:]
+            i=t1.size
+        else:
+            if(t1[i] > t2[j]):
+                newT[s]=t2[j]
+                newJ[s]=j2[j]
+                j+=1
+            else:
+                newT[s]=t1[i]
+                newJ[s]=j1[i]
+                i+=1
+        s+=1
+    return([newT,newJ])
+
+##
 TempsDepart = time.time()
 
 StockProbaEnd = np.zeros((length_p,NbrAlgo))
