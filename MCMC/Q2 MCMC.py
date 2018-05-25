@@ -29,7 +29,7 @@ prob = np.concatenate([p[::-1],p])
 p,M=0.7,int(8e4)
 
 # Seuils successif (calculé avec le programme précédent)
-BoundSplit = [2.0, -2.0, -6]
+BoundSplit = [2.0, -3.0, -7]
 K = len(BoundSplit)
 
 print("Les seuils successifs envisagés pour le splitting sont \t")

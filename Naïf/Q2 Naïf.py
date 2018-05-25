@@ -6,7 +6,7 @@ import time
 ## Q2. Naïf
 ###############################################################################
 P0 = 10
-niveau = 0
+niveau = -4
 T = 4*3600
 la1 = 1/660
 la2 = 1/110
@@ -22,7 +22,7 @@ p = P[i]
 val = np.delete(np.arange(-m,m+1),m)
 prob = np.concatenate([p[::-1],p])
 
-n=int(1e5)
+n=int(1e4)
 alpha=0.95
 
 ## Fonction auxilliaire 
@@ -92,7 +92,7 @@ minP=np.array([min(P0+np.concatenate([np.arange(1),np.cumsum(fusion(TimeJump1[i]
 pEst = np.sum(minP < niveau)/n
 
 print("\n Durée d'exécution "+str(time.time()-TempsDepart))
-print ("La proba estimée est " + str(ProbaEnd))
+print ("La proba estimée est " + str(pEst))
 
 sEst=pEst*(1-pEst)
 
@@ -121,5 +121,5 @@ NbrJump2 = npr.poisson(T*la2,n)
 Pt=P0+np.array([np.sum(npr.choice(val,size=NbrJump1[i],p=prob))+npr.choice([-1,1])*(1-NbrJump2[i]%2) for i in np.arange(n)])
 distrib=np.sort(Pt)
 
-print("\n Durée d'exécution "+str(time.time()-TempsDepart))
+print("\nDurée d'exécution "+str(time.time()-TempsDepart))
 print(distrib[int(q1*n)],distrib[int(q2*n)])
