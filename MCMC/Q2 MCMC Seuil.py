@@ -3,7 +3,7 @@ import numpy.random as npr
 import  matplotlib.pyplot as plt
 
 ###############################################################################
-## Q2. Splitting + MCMC : trouver les seuils pour une valeur de P0, p, lambda, T
+## Q2. Splitting + MCMC : trouver les seuils à utiliser dans l'algorithme pour une valeur de P0, p, lambda, T
 ###############################################################################
 plt.close()
 

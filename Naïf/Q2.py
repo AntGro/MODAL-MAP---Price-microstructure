@@ -2,10 +2,10 @@ import numpy as np
 import numpy.random as npr
 import matplotlib.pyplot as plt
 import scipy.stats as sps
-
+import time
 ##
 
-n=int(1e5)
+n=int(1000)
 P0=10
 T=4*3600
 lamb1=660  #temps moyen entre deux sauts du processus 1 : 660s
@@ -67,8 +67,14 @@ def process():
             i1+=1
     return 0
 
+TempsDepart = time.time()
+
 
 pEst=np.mean(np.array([process() for k in range(n)]))
+
+print(time.time()-TempsDepart)
+print(pEst)
+
 
 sEst=pEst*(1-pEst)
 

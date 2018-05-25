@@ -31,7 +31,7 @@ p,M=0.7,int(8e4)
 # calcul des seuils successifs
 #K=6
 #BoundSplit = P0*(1-((np.arange(K,dtype=float)+1)**(1/2)/K**(1/2)))-1
-BoundSplit=[8,5,2, -1]
+BoundSplit=[2.0, -2.0, -3]
 K=len(BoundSplit)
 print("Les seuils successifs envisagés pour le splitting sont \t")
 print(BoundSplit); print("\n")
@@ -197,14 +197,14 @@ TempsFin = time.time()
 print("\n Durée d'exécution "+str(TempsFin-TempsDepart))
 
 plt.figure(1)
-plt.title("Consistance des estimateurs a chaque niveau pour p = "+ str(p) +" et lambda = " + str(la))
+plt.title("Consistance des estimateurs a chaque niveau pour p = "+ str(p) +" et lambda = " + str(la1))
 plt.legend(loc="best")
 plt.ylabel("Probabilite conditionnelle au niveau k")
 plt.grid()
 
 
 plt.figure(2)
-plt.title("Evolution du taux d'acceptation pour p = "+ str(p) +" et lambda = " + str(la))
+plt.title("Evolution du taux d'acceptation pour p = "+ str(p) +" et lambda = " + str(la1))
 plt.ylabel("Taux d'acceptation")
 plt.legend(loc="best")
 plt.grid()

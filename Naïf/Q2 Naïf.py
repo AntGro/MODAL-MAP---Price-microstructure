@@ -1,12 +1,10 @@
 import numpy as np
 import numpy.random as npr
-import  matplotlib.pyplot as plt
+import scipy.stats as sps
 import time
 ###############################################################################
-## Q2. Splitting + MCMC pour un seul run de l'algo et une seule valeur de p
+## Q2. Naïf
 ###############################################################################
-plt.close()
-
 P0 = 10
 niveau = 0
 T = 4*3600
@@ -16,7 +14,7 @@ la2 = 1/110
 N = [1,3]
 P = [[1/2], [1/4,1/6,1/12]]
 
-i=0
+i=1
 
 m = N[i]
 p = P[i]
@@ -25,6 +23,7 @@ val = np.delete(np.arange(-m,m+1),m)
 prob = np.concatenate([p[::-1],p])
 
 n=int(1e4)
+alpha=0.95
 
 ## Fonction auxilliaire 
 # à partir de 2 array de temps de sauts t1 et t2 et 2 arrays de taille de sauts j1 et j2 -> retourne l'array des temps de sauts ordonnés et la l'array des valeurs des sauts associés.
@@ -59,7 +58,7 @@ def oscillator(j0,n):
     return np.array([j0*(-1)**i for i in np.arange(n)])
 
 ##----------
-# NIVEAU 1
+# Estimation de la probabilité d'avoir un prix négatif
 ##----------
 print("MC estimation P(min(P_t) < {}) avec {} simulations".format(niveau, n))
 
@@ -90,7 +89,37 @@ TimeJump2 = [np.sort(TimeJump2[interval2[i]:interval2[i+1]]) for i in np.arange(
 minP=np.array([min(P0+np.concatenate([np.arange(1),np.cumsum(fusion(TimeJump1[i], JumpSize1[interval1[i]:interval1[i+1]], TimeJump2[i], JumpSize2[i])[1])])) for i in np.arange(n)])
 
 #Affichage de l'estimateur de la proba pour ce niveau
-ProbaEnd = np.sum(minP < niveau)/n
+pEst = np.sum(minP < niveau)/n
 
 print("\n Durée d'exécution "+str(time.time()-TempsDepart))
 print ("La proba estimée est " + str(ProbaEnd))
+
+sEst=pEst*(1-pEst)
+
+qInf=sps.norm.ppf((1-alpha)/2)
+qSup=sps.norm.ppf((1+alpha)/2)
+
+bInf=pEst-qSup*sEst/np.sqrt(n)
+bSup=pEst-qInf*sEst/np.sqrt(n)
+
+print("La probabilité associée à la distribution {0} avec P0={1} est estimée à : \n {2} comprise entre {3:6f} et {4:6f} au niveau de confiance {5}".format([list(val),list(prob)],P0,pEst,bInf,bSup,alpha))
+
+##----------
+# Estimation des quartiles
+##----------
+q1=1e-5
+q2=1-q1
+
+print("MC estimation quartile au niveau {} avec {} simulations".format(q1, n))
+
+TempsDepart = time.time()
+
+# Nombre de sauts sur [0,T], par points de la chaîne
+NbrJump1 = npr.poisson(T*la1,n)
+NbrJump2 = npr.poisson(T*la2,n)
+
+Pt=P0+np.array([np.sum(npr.choice(val,size=NbrJump1[i],p=prob))+npr.choice([-1,1])*(1-NbrJump2[i]%2) for i in np.arange(n)])
+distrib=np.sort(Pt)
+
+print("\n Durée d'exécution "+str(time.time()-TempsDepart))
+print(distrib[int(q1*n)],distrib[int(q2*n)])
