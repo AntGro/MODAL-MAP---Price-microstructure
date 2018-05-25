@@ -1,13 +1,13 @@
 import numpy as np
 import numpy.random as npr
-import  matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 ###############################################################################
 ## Q2. Splitting + MCMC : trouver les seuils à utiliser dans l'algorithme pour une valeur de P0, p, lambda, T
 ###############################################################################
 plt.close()
 
-P0 = 35
+P0 = 10
 T = 4*3600
 la1 = 1/660
 la2 = 1/110
@@ -26,8 +26,8 @@ prob = np.concatenate([p[::-1],p])
 ## Paramètre seuil
 p = 0.7             #taux de conservation des sauts pour le processus de Markov
 ratio = 0.1         #objectif pour les seuils : P(X in A_(k+1)|X in A_k) = ratio
-n = 1000             #nombre de simulations
-niveau = 0          # On cherche à calculer P(min P_t < niveau)
+n = (1e4)           #nombre de simulations
+niveau = -5         # On cherche à calculer P(min P_t < niveau)
 
 ## Fonction auxilliaire 
 # à partir de 2 array de temps de sauts t1 et t2 et 2 arrays de taille de sauts j1 et j2 -> retourne l'array des temps de sauts ordonnés et la l'array des valeurs des sauts associés.
@@ -93,14 +93,14 @@ minP=np.array([min(P0+np.concatenate([np.arange(1),np.cumsum(fusion(TimeJump1[i]
 a = [np.sort(minP)[int(ratio*n)]]
 
 # Valeur initiale de la chaîne
-argmin = np.argwhere(minP<=a[-1])                                     # indice des chaînes potentielles
+argmin = np.argwhere(minP<=a[-1])                             # indice des chaînes potentielles
 index = npr.choice(argmin.reshape(argmin.size))               # choix au hasard d'un indice
 TimeJump1 = TimeJump1[index]                                  # Temps de sauts (1)
 TimeJump2 = TimeJump2[index]                                  # Temps de sauts (2)
 JumpSize1 = JumpSize1[interval1[index]:interval1[index+1]]    # Taille de sauts
 JumpSize2 = JumpSize2[index]                                  # Taille de sauts
 
-PathPoissonInit=[TimeJump1,JumpSize1,TimeJump2,JumpSize2]             # Chaîne initiale
+PathPoissonInit=[TimeJump1,JumpSize1,TimeJump2,JumpSize2]     # Chaîne initiale
 
 
 ## BOUCLE pour les AUTRES NIVEAUX

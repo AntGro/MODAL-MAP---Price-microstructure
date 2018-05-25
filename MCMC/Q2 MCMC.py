@@ -28,14 +28,12 @@ prob = np.concatenate([p[::-1],p])
 #p,M=0.5,int(1e4)
 p,M=0.7,int(8e4)
 
-# calcul des seuils successifs
-#K=6
-#BoundSplit = P0*(1-((np.arange(K,dtype=float)+1)**(1/2)/K**(1/2)))-1
-BoundSplit=[2.0, -2.0, -3]
-K=len(BoundSplit)
+# Seuils successif (calculé avec le programme précédent)
+BoundSplit = [2.0, -2.0, -6]
+K = len(BoundSplit)
+
 print("Les seuils successifs envisagés pour le splitting sont \t")
 print(BoundSplit); print("\n")
-
 
 TempsDepart = time.time()
 
@@ -111,10 +109,10 @@ TimeJump2 = TimeJump2[index]                                  # Temps de sauts (
 JumpSize1 = JumpSize1[interval1[index]:interval1[index+1]]    # Taille de sauts
 JumpSize2 = JumpSize2[index]                                  # Taille de sauts
 
-PathPoissonInit=[TimeJump1,JumpSize1,TimeJump2,JumpSize2]     # Chaîne initiale
+PathPoissonInit = [TimeJump1,JumpSize1,TimeJump2,JumpSize2]     # Chaîne initiale
 
 #Affichage de l'estimateur de la proba pour ce niveau
-Frequence=np.concatenate([np.arange(1),np.cumsum(minP<=BoundSplit[0])/np.arange(1,M+1)])
+Frequence = np.concatenate([np.arange(1),np.cumsum(minP<=BoundSplit[0])/np.arange(1,M+1)])
 ProbaEnd = Frequence[-1]
 print ("\t Pour le niveau 1, la proba estimée est " + str(ProbaEnd))
 
@@ -126,8 +124,6 @@ plt.plot(Frequence, label="niveau 1")
 for n_level in (1+np.arange(K-1)):
     print("\t Chaine "+ str(n_level+1) + " sur " +str(K))
     PathPoisson = PathPoissonInit
-    TimeJumps1 = []
-    JumpSizes1 = []
         
     # Génération des chaînes (2) 
     NbrJump2 = npr.poisson(T*la2,M)
@@ -142,10 +138,7 @@ for n_level in (1+np.arange(K-1)):
     MinPath = np.zeros(M+1,dtype=float)
     MinPath[0] = minP[index]
     
-    for n_chain in np.arange(M):
-        TimeJumps1.append(PathPoisson[0])
-        JumpSizes1.append(PathPoisson[1])
-        
+    for n_chain in np.arange(M):        
         # Quels sauts sont conserves dans la première chaîne
         Conserve=np.random.uniform(0,1,size=PathPoisson[0].size)<=p
         JumpTimeConserve = PathPoisson[0][Conserve]

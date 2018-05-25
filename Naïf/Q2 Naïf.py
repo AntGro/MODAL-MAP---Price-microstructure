@@ -14,7 +14,7 @@ la2 = 1/110
 N = [1,3]
 P = [[1/2], [1/4,1/6,1/12]]
 
-i=1
+i=0
 
 m = N[i]
 p = P[i]
@@ -22,7 +22,7 @@ p = P[i]
 val = np.delete(np.arange(-m,m+1),m)
 prob = np.concatenate([p[::-1],p])
 
-n=int(1e4)
+n=int(1e5)
 alpha=0.95
 
 ## Fonction auxilliaire 
@@ -107,7 +107,7 @@ print("La probabilité associée à la distribution {0} avec P0={1} est estimée
 ##----------
 # Estimation des quartiles
 ##----------
-q1=1e-5
+q1=1e-4
 q2=1-q1
 
 print("MC estimation quartile au niveau {} avec {} simulations".format(q1, n))
