@@ -39,7 +39,13 @@ def process():
     P=P0+np.cumsum(signJ(npr.poisson(T/lamb)))
     return min(P)<0
 
+TempsDepart = time.time()
+
 pEst=np.mean(np.array([process() for k in range(n)]))
+
+print("\nDurée d'exécution "+str(time.time()-TempsDepart))
+print ("La proba estimée est " + str(pEst))
+
 
 sEst=pEst*(1-pEst)
 
