@@ -2,11 +2,13 @@ import numpy as np
 import numpy.random as npr
 import matplotlib.pyplot as plt
 import scipy.stats as sps
+import time
 
 ##
 
-n = int(1e5)
+n = int(1e4)
 P0 = 10
+niveau=2
 T = 4*3600
 lamb = 300  #temps moyen entre deux sauts : 300s
 alpha = -0.875
@@ -37,7 +39,7 @@ probabilite=np.sum(np.array(echantillon)==1)/taille
 ##Probability inf(P)<0
 def process():
     P=P0+np.cumsum(signJ(npr.poisson(T/lamb)))
-    return min(P)<0
+    return min(P)<niveau
 
 TempsDepart = time.time()
 
