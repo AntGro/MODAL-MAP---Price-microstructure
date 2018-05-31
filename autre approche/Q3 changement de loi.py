@@ -26,6 +26,10 @@ prob = p
 n=int(1e4)
 alpha = -0.875
 
+#Nouveau paramètre de transition
+theta = 0.875
+
+
 confiance = 0.95    
 
 ##----------
@@ -38,24 +42,30 @@ def generateSign(rand,a=alpha):
         s.append((2*(rand[i]<((1+s[-1]*a)/2))-1))
     return np.array(s)
 
+def Ln(x, y, a=alpha, t=theta): # retourne le rapport de vraissemblance de P_a par rapport à P_t
+    if (x == y):
+        return (1+a)/(1+t)
+    return (1-a)/(1-t)
+    
 
 TempsDepart = time.time()
+prob=[]
 
-# Nombre de sauts sur [0,T], par points de la chaîne
-NbrJump = npr.poisson(T*la,n)
-
-# Découpage des chaînes
-interval = np.cumsum(np.concatenate([np.arange(1), NbrJump]))
+for N in np.arange(30,60):
+    
+# Nombre de sauts par points de la chaîne
+N = 50
+NbrJump = n * N
 
 # Taille des sauts pour toutes les chaînes 
-JumpSizeAbs = npr.choice(val,size=np.sum(NbrJump),p=prob)
+JumpSizeAbs = npr.choice(val,size=N*n,p=prob)
 
-# Signe des sauts
-randTransition=npr.rand(np.sum(NbrJump))
-JumpSign = [generateSign(randTransition[interval[i]:interval[i+1]],alpha) for i in np.arange(n)]
+# Signe des sauts --- /!\ Sous theta /!\
+randTransition=npr.rand(n,N)
+JumpSign = np.apply_along_axis(generateSign, axis=1, arr=randTransition, a=theta)
    
-# Calcul des Prix min pour les n chaînes
-minP=np.array([min(P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[interval[i]:interval[i+1]]*JumpSign[i])])) for i in np.arange(n)])
+# Calcul des Prix min pour les n chaînes mult par Ln
+minP=np.array([min(P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[i:i+N]*JumpSign[i])])) * np.product(np.array([Ln(JumpSign[i,j],JumpSign[i,j+1]) for j in np.arange(N-1)])) for i in np.arange(0,n,N)])
 
 #Affichage de l'estimateur de la proba pour ce niveau
 pEst = np.mean(minP < niveau)
@@ -67,12 +77,11 @@ print ("La proba estimée est " + str(pEst))
 #plt.hist(minP,np.arange(min(minP),P0+1),normed=True,cumulative=True)
 #plt.show()
 
-#print(np.sum(np.array([np.mean(JumpSign[i][:-1]*JumpSign[i][1:]==1)*NbrJump[i] for i in range(n)]))/np.sum(NbrJump))
-
+##
 sEst=pEst*(1-pEst)
 
-qInf=sps.norm.ppf((1-alpha)/2)
-qSup=sps.norm.ppf((1+alpha)/2)
+qInf=sps.norm.ppf((1-confiance)/2)
+qSup=sps.norm.ppf((1+confiance)/2)
 
 bInf=pEst-qSup*sEst/np.sqrt(n)
 bSup=pEst-qInf*sEst/np.sqrt(n)
