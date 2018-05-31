@@ -24,11 +24,8 @@ prob = np.concatenate([p[::-1],p])
 def f(x, theta):
     return theta*x
 
-f=np.vectorize(f)
+f= np.vectorize(f)
 
-#lambNew = lamb*np.dot(np.exp(f(val,theta)),prob)
-#probNew = np.multiply(np.exp(f(val,theta)),prob)
-#probNew = probNew/(np.sum(probNew))
 
 ## Proba inf(P)<0
 
@@ -64,3 +61,31 @@ bInf = pEst-qSup*sEst/np.sqrt(n)
 bSup = pEst-qInf*sEst/np.sqrt(n)
 
 ## Quantile 
+
+
+
+def dichotomie(pEst,seuil, sup):
+    pas=1
+    inf=sup-1
+    while (pEst(inf)>seuil):
+        pas=2*pas
+        inf=inf-pas
+        
+    while(inf<sup):
+        c = (sup+inf)/2
+        if (pEst(c)<seuil):
+            inf = c
+        else:
+            sup = c
+    return inf
+
+
+
+
+
+
+
+
+
+
+
