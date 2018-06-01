@@ -5,12 +5,12 @@ import time
 import matplotlib.pyplot as plt
 
 ###############################################################################
-## Q3. Naïf
+## Q3. Changement de loi
 ###############################################################################
 plt.close()
 
-P0 = 10
-niveau = 6
+P0 = 35
+niveau = 0
 
 T = 4*3600
 la = 1/300
@@ -26,11 +26,13 @@ p = P[i]
 val = np.arange(1,m+1)
 prob = p
 
-n=int(1e3)
+n=int(1e4)
+N = 100 # Nombre de sauts par points de la chaîne
+
 alpha = -0.875
 
 #Nouveau paramètre de transition
-theta = -0.5
+theta = 0.1
 
 
 confiance = 0.95    
@@ -48,6 +50,37 @@ def Ln(x, y, a=alpha, t=theta): # retourne le rapport de vraissemblance de P_a p
     if (x == y):
         return (1+a)/(1+t)
     return (1-a)/(1-t)
+
+
+
+## Simu script
+TempsDepart = time.time()
+
+NbrJump = n * N
+
+# Taille des sauts pour toutes les chaînes 
+JumpSizeAbs = npr.choice(val,size=N*n,p=prob)
+
+# Signe des sauts --- /!\ Sous theta /!\
+randTransition=npr.rand(n,N)
+JumpSign = np.apply_along_axis(generateSign, axis=1, arr=randTransition, a=theta)
+
+# Calcul des Prix min pour les n chaînes mult par Ln
+minP=np.array([(min(P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[i*N:i*N+N]*JumpSign[i])]))< niveau) * np.product(np.array([Ln(JumpSign[i,j],JumpSign[i,j+1]) for j in np.arange(N-1)])) for i in np.arange(0,n)])
+
+#Affichage de l'estimateur de la proba pour ce niveau
+pEst=np.mean(minP)
+
+
+print("\nDurée d'exécution "+str(time.time()-TempsDepart))
+print ("La proba estimée est " + str(pEst))
+
+for i in range(5):
+    plt.step(np.arange(N+1),P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[i*N:i*N+N]*JumpSign[i])]))
+    plt.step([0,N+1],[niveau,niveau],"r")
+
+plt.show()
+
 
 ## Simu version fonction
 def simu(N, niveau, theta, n=1000, alpha=-0.875, P0=10 ):
@@ -81,46 +114,14 @@ def simu(N, niveau, theta, n=1000, alpha=-0.875, P0=10 ):
 #     plt.show()
     return(pEst)
 
-## Simu script
-TempsDepart = time.time()
-
-N = 100 # Nombre de sauts par points de la chaîne
-NbrJump = n * N
-
-# Taille des sauts pour toutes les chaînes 
-JumpSizeAbs = npr.choice(val,size=N*n,p=prob)
-
-# Signe des sauts --- /!\ Sous theta /!\
-randTransition=npr.rand(n,N)
-JumpSign = np.apply_along_axis(generateSign, axis=1, arr=randTransition, a=theta)
-
-# Calcul des Prix min pour les n chaînes mult par Ln
-minP=np.array([(min(P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[i*N:i*N+N]*JumpSign[i])]))< niveau) * np.product(np.array([Ln(JumpSign[i,j],JumpSign[i,j+1]) for j in np.arange(N-1)])) for i in np.arange(0,n)])
-
-#Affichage de l'estimateur de la proba pour ce niveau
-pEst=np.mean(minP)
-
-
-print("\nDurée d'exécution "+str(time.time()-TempsDepart))
-print ("La proba estimée est " + str(pEst))
-
-for i in range(5):
-    plt.plot(np.arange(N+1),P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[i*N:i*N+N]*JumpSign[i])]))
-    plt.plot([0,N+1],[niveau,niveau],"r")
-
-plt.show()
-
-
-
-
 ##
-sEst=pEst*(1-pEst)
-
-qInf=sps.norm.ppf((1-confiance)/2)
-qSup=sps.norm.ppf((1+confiance)/2)
-
-bInf=pEst-qSup*sEst/np.sqrt(n)
-bSup=pEst-qInf*sEst/np.sqrt(n)
+# sEst=pEst*(1-pEst)
+# 
+# qInf=sps.norm.ppf((1-confiance)/2)
+# qSup=sps.norm.ppf((1+confiance)/2)
+# 
+# bInf=pEst-qSup*sEst/np.sqrt(n)
+# bSup=pEst-qInf*sEst/np.sqrt(n)
 
 ##
 # q1=1e-4

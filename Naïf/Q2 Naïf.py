@@ -94,6 +94,13 @@ pEst = np.sum(minP < niveau)/n
 print("\n Durée d'exécution "+str(time.time()-TempsDepart))
 print ("La proba estimée est " + str(pEst))
 
+for i in range(4):
+    plt.step(np.concatenate([np.arange(1),fusion(TimeJump1[i], JumpSize1[interval1[i]:interval1[i+1]], TimeJump2[i], JumpSize2[i])[0]]),P0+np.concatenate([np.arange(1),np.cumsum(fusion(TimeJump1[i], JumpSize1[interval1[i]:interval1[i+1]], TimeJump2[i], JumpSize2[i])[1])]))
+    plt.plot([0,T],[niveau,niveau],"r")
+
+#plt.hist(minP,np.arange(min(minP),P0+1),normed=True,cumulative=True)
+plt.show()
+
 sEst=pEst*(1-pEst)
 
 qInf=sps.norm.ppf((1-alpha)/2)

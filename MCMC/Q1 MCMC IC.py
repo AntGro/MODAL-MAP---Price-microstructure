@@ -26,20 +26,20 @@ prob=np.concatenate([p[::-1],p])
 pVecteur=[0.7]
 pVecteur = [0.1,0.2,0.3,0.4, 0.5, 0.6,0.7,0.8, 0.9]
 length_p = len(pVecteur)
-LengthTrajVecteur=[int(1e4) for i in range(length_p)]
+LengthTrajVecteur=[int(5e4) for i in range(length_p)]
 
 #la,K = 0.05,8
-# pVecteur = [0.1, 0.5, 0.9]
-# length_p = len(pVecteur)
+#pVecteur = [0.1, 0.5, 0.9]
+#length_p = len(pVecteur)
 # LengthTrajVecteur=[int(1e4) for i in np.arange(length_p)]
 
 
 # Nombre de réalisations indépendantes de l'estimateur
-NbrAlgo = 10
+NbrAlgo = 20
 
 
 # Seuils successifs
-BoundSplit = [2.0, -3.0, -7]
+BoundSplit = [24, 18.0, 13.0, 9.0, 6.0, 3.0, 0.0, -1]
 K = len(BoundSplit)
 
 print("les seuils successifs envisagés pour le splitting sont \t")
@@ -165,7 +165,7 @@ for n_p in np.arange(length_p):
             ProbaEnd = ProbaEnd*NewProbaEnd
             #print ("\t Pour le niveau " + str(n_level) +", la proba estimée est " + str(NewProbaEnd))    
             
-            #Visulation de la consistance et de l'évoution du tax d'acceptation-rejet pour un run
+            #Visulation de la consistance et de l'évoution du taux d'acceptation-rejet pour un run
             #if n_algo==1:
                 ## Visualisation de la consistance de l'estimateur
                 #plt.figure(1)
@@ -213,4 +213,6 @@ plt.savefig("Ratios.lambda"+ str(la)+".M"+str(LengthTrajVecteur[0])+".pdf")
 
 
 plt.show()
+
+## Fonction
 

@@ -7,7 +7,7 @@ import time
 ## Q3. Naïf
 ###############################################################################
 P0 = 10
-niveau = 5
+niveau = 6
 
 T = 4*3600
 la = 1/300
@@ -22,9 +22,9 @@ p = P[i]
 
 val = np.arange(1,m+1)
 prob = p
-N = 20 # nombre de sauts par chaîne
+N = 100 # nombre de sauts par chaîne
 
-n=int(1e5)
+n=int(1e4)
 alpha = -0.875
 
 confiance = 0.95    
@@ -59,12 +59,9 @@ pEst = np.mean(minP < niveau)
 print("\nDurée d'exécution "+str(time.time()-TempsDepart))
 print ("La proba estimée est " + str(pEst))
 
-print("\nDurée d'exécution "+str(time.time()-TempsDepart))
-print ("La proba estimée est " + str(pEst))
-
 for i in range(5):
-    plt.plot(np.arange(N+1),P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[i*N:i*N+N]*JumpSign[i])]))
-plt.plot([0,N+1],[niveau,niveau],"r")
+    plt.step(np.arange(N+1),P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[i*N:i*N+N]*JumpSign[i])]))
+    plt.step([0,N+1],[niveau,niveau],"r")
 
 #plt.hist(minP,np.arange(min(minP),P0+1),normed=True,cumulative=True)
 plt.show()
