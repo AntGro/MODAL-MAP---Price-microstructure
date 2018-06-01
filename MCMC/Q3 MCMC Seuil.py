@@ -3,24 +3,29 @@ import numpy.random as npr
 import matplotlib.pyplot as plt
 
 ###############################################################################
-## Q1. Splitting + MCMC : trouver les seuils à utiliser dans l'algorithme pour une valeur de P0, p, lambda, T
+## Q3. Splitting + MCMC : trouver les seuils à utiliser dans l'algorithme pour une valeur de P0, p, lambda, T
 ###############################################################################
 plt.close()
 
-P0 = 35
+P0 = 10
+niveau = 10
+
 T = 4*3600
 la = 1/300
 
 N = [1,3]
-P = [[1/2],[1/4,1/6,1/12]]
+P = [[1], [1/2,3/8,1/8]]
 
-i = 0
+i=0
 
 m = N[i]
 p = P[i]
 
-val = np.delete(np.arange(-m,m+1),m)
-prob = np.concatenate([p[::-1],p])
+val = np.arange(1,m+1)
+prob = p
+
+n=int(1e4)
+alpha = -0.875
 
 ## Paramètre seuil
 p = 0.7             #taux de conservation des sauts pour le processus de Markov
@@ -54,23 +59,34 @@ def fusion(t1,j1,t2,j2):
         s+=1
     return([newT,newJ])
     
-
+def generateSign(rand,a=alpha):
+    s=[2*(rand[0]<0.5)-1]
+    for i in np.arange(1,rand.size):
+        s.append((2*(rand[i]<((1+s[-1]*a)/2))-1))
+    return np.array(s)
+    
 ##----------
 # NIVEAU 1
 ##----------
 
 # Nombre de sauts sur [0,T], par points de la chaîne
-NbrJump=npr.poisson(T*la,n)
+NbrJump = npr.poisson(T*la,n)
 
 # Temps de sauts sur [0,T], pour toutes les chaînes
 TimeJump = T*np.random.uniform(0,1,size=np.sum(NbrJump))
 
-# Taille des sauts pour toutes les chaînes
+# Découpage des chaînes
+interval = np.cumsum(np.concatenate([np.arange(1), NbrJump]))
+
+# Taille des sauts pour toutes les chaînes 
 JumpSize = npr.choice(val,size=np.sum(NbrJump),p=prob)
 
-# Calcul des prix min pour chaque chaîne
-interval = np.cumsum(np.concatenate([np.arange(1),NbrJump]))
-minP = np.array([min(P0+np.concatenate([np.arange(1),np.cumsum(JumpSize[interval[i]:interval[i+1]])])) for i in np.arange(n)])
+# Signe des sauts
+randTransition=npr.rand(np.sum(NbrJump))
+JumpSign = [generateSign(randTransition[interval[i]:interval[i+1]],alpha) for i in np.arange(n)]
+   
+# Calcul des Prix min pour les n chaînes
+minP=np.array([min(P0+np.concatenate([np.arange(1),np.cumsum(JumpSize[interval[i]:interval[i+1]]*JumpSign[i])])) for i in np.arange(n)])
 
 # Premier seuil a1
 a = [np.sort(minP)[int(ratio*n)]]
