@@ -64,7 +64,7 @@ print("La probabilité associée à la distribution {0} avec P0={1} est estimée
 ##----------
 # Estimation des quartiles
 ##----------
-q1=1e-4
+q1=1e-7
 q2=1-q1
 
 print("MC estimation quartile au niveau {} avec {} simulations".format(q1, n))

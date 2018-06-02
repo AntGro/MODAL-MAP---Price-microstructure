@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 ###############################################################################
 plt.close()
 
-P0 = 35
+P0 = 10
 niveau = 0
 
 T = 4*3600
@@ -32,7 +32,7 @@ N = 100 # Nombre de sauts par points de la chaîne
 alpha = -0.875
 
 #Nouveau paramètre de transition
-theta = 0.1
+theta = -0.8
 
 
 confiance = 0.95    
