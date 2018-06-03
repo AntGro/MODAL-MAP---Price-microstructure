@@ -29,6 +29,7 @@ prob = p
 n=int(1e4)
 N = 100 # Nombre de sauts par points de la chaîne
 
+# paramètre de la matrice de transition
 alpha = -0.875
 
 #Nouveau paramètre de transition
@@ -40,6 +41,8 @@ confiance = 0.95
 ##----------
 # Estimation de la probabilité d'avoir un prix négatif
 ##----------
+
+ #étant donné un array de nombres aléatoires 'rand' renvoie génère la chaîne de Markov des signes suivant la matrice de transition de paramètre alpha
 def generateSign(rand,a=alpha):
     s=[2*(rand[0]<0.5)-1]
     for i in np.arange(1,rand.size):
@@ -56,7 +59,8 @@ def Ln(x, y, a=alpha, t=theta): # retourne le rapport de vraissemblance de P_a p
 ## Simu script
 TempsDepart = time.time()
 
-NbrJump = n * N
+#nombre total de sauts à simuler
+NbrJump = n * N 
 
 # Taille des sauts pour toutes les chaînes 
 JumpSizeAbs = npr.choice(val,size=N*n,p=prob)
@@ -65,7 +69,7 @@ JumpSizeAbs = npr.choice(val,size=N*n,p=prob)
 randTransition=npr.rand(n,N)
 JumpSign = np.apply_along_axis(generateSign, axis=1, arr=randTransition, a=theta)
 
-# Calcul des Prix min pour les n chaînes mult par Ln
+# Calcul des Prix min multipliés par Ln pour chacune des n chaînes 
 minP=np.array([(min(P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[i*N:i*N+N]*JumpSign[i])]))< niveau) * np.product(np.array([Ln(JumpSign[i,j],JumpSign[i,j+1]) for j in np.arange(N-1)])) for i in np.arange(0,n)])
 
 #Affichage de l'estimateur de la proba pour ce niveau

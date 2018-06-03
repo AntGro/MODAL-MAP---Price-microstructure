@@ -1,0 +1,4 @@
+Q1 MCMC IC P0=35, seuil=[24, 17.0, 12.0, 9.0, 6.0, 3.0, 0.0, -1], p=0.7, nAlgo=50,M=7.5e4 : 
+	La proba de ruine estimée est 3.5486777362e-07
+	IC asymptotique a 95% : +/- 3.68692421777e-09
+	Durée d'exécution 12995.59573173523

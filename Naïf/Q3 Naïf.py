@@ -7,7 +7,7 @@ import time
 ## Q3. Naïf
 ###############################################################################
 P0 = 10
-niveau = 6
+niveau = 0
 
 T = 4*3600
 la = 1/300
@@ -24,7 +24,7 @@ val = np.arange(1,m+1)
 prob = p
 N = 100 # nombre de sauts par chaîne
 
-n=int(1e4)
+n=int(1e5)
 alpha = -0.875
 
 confiance = 0.95    

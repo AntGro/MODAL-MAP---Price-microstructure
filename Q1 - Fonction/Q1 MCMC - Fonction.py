@@ -121,13 +121,15 @@ def Q1_MCMC_Body(BoundSplit, P0=35, M=int(8e4), display=True, p=0.7, i=0, T=4*36
     val = np.delete(np.arange(-m,m+1),m)
     prob = np.concatenate([P[i][::-1],P[i]])
     K = len(BoundSplit)
+    
+    if(display):
+        print("Les seuils successifs envisagés pour le splitting sont \t")
+        print(BoundSplit); print("\n")
+        print("Lorsque p = "+ str(p) +" et lambda = " + str(la))   
 
-    print("Les seuils successifs envisagés pour le splitting sont \t")
-    print(BoundSplit); print("\n")
     
     TempsDepart = time.time()
     
-    print("Lorsque p = "+ str(p) +" et lambda = " + str(la))   
     plt.clf()
 
     print("\t Chaine 1 sur "+ str(K))
@@ -209,13 +211,12 @@ def Q1_MCMC_Body(BoundSplit, P0=35, M=int(8e4), display=True, p=0.7, i=0, T=4*36
             else:
                 Frequence[n_chain+1] = Frequence[n_chain]
         
+        NewProbaEnd = Frequence[-1]/M
+        ProbaEnd = ProbaEnd*NewProbaEnd
+        print ("\t Pour le niveau " + str(n_level+1) +", la proba estimée est " + str(NewProbaEnd))   
+        
         if(display):
-            #
-            # Affichage
-            #
-            NewProbaEnd = Frequence[-1]/M
-            ProbaEnd = ProbaEnd*NewProbaEnd
-            print ("\t Pour le niveau " + str(n_level+1) +", la proba estimée est " + str(NewProbaEnd))    
+    
             # Visualisation de la consistance de l'estimateur
             plt.figure(1)
             plt.step(np.arange(Frequence.size),Frequence/(np.arange(M+1,dtype=float)+1), label="niveau %1.0f" %(n_level+1))  
@@ -247,3 +248,60 @@ def Q1_MCMC_Body(BoundSplit, P0=35, M=int(8e4), display=True, p=0.7, i=0, T=4*36
     print("\n La proba de ruine estimée en partant de {} est {}\n".format(P0,ProbaEnd))
     
     return ProbaEnd
+    
+def Q1_MCMCIC(BoundSplit, P0=35, niveau=0, pVecteur=[0.7], NbrAlgo=25, M=int(5e4), display=True, p=0.7, i=0, T=4*3600, la=1/300, N=[1,3], P=[[1/2],[1/4,1/6,1/12]]):
+    plt.close()
+    
+    val=np.delete(np.arange(-N[i],N[i]+1),N[i])
+    prob=np.concatenate([P[i][::-1],P[i]])
+    
+    length_p = len(pVecteur)
+    LengthTrajVecteur=[M for i in range(length_p)]
+
+    K = len(BoundSplit)
+    
+    TempsDepart = time.time()
+
+    StockProbaEnd = np.zeros((length_p,NbrAlgo))
+    # Boucle sur les valeurs de p
+    for n_p in np.arange(length_p):
+        p = pVecteur[n_p]
+        LengthTraj = LengthTrajVecteur[n_p]
+        print("Lorsque p = "+ str(p) +" et lambda = " + str(la))   
+        plt.clf()
+        
+        # Boucle sur les differents runs independants
+        for n_algo in np.arange(NbrAlgo):
+            print("Run "+ str(n_algo+1)+ " sur " + str(NbrAlgo))
+            ProbaEnd = Q1_MCMC_Body(BoundSplit, P0, M, False, p, i, T, la, N, P)
+            StockProbaEnd[n_p,n_algo] = ProbaEnd
+        print("La proba de ruine estimée est " + str(np.mean(StockProbaEnd[n_p,:])))
+        print("IC asymptotique a 95% : +/- "+ str(np.std(StockProbaEnd[n_p,:])/np.sqrt(n_algo)))
+    
+    TempsFin = time.time()
+    print("Durée d'exécution "+str(TempsFin-TempsDepart))
+    
+    if(display) : 
+        plt.clf()
+        
+        plt.figure(1)
+        plt.title("Boxplot de " + str(NbrAlgo) +" estimateurs  pour lambda= " +str(la) + " et M= "+str(LengthTrajVecteur[0]))
+        plt.boxplot(np.transpose(StockProbaEnd), positions= [2*i+1 for i in np.arange(length_p)], labels = [str(x) for x in pVecteur])
+        plt.xlabel("valeur de p")
+        plt.ylabel("Valeur de l'estimateur")
+        plt.savefig("Boxplot.lambda"+ str(la)+".M"+str(LengthTrajVecteur[0])+".pdf")
+        
+        plt.figure(2)
+        M = np.mean(StockProbaEnd, axis=1)
+        S = np.std(StockProbaEnd, axis=1)
+        plt.plot(pVecteur, S/M, 'd-')
+        plt.xlabel("valeur de p")
+        plt.ylabel("ratio ecart type/moyenne")
+        plt.title("lambda= " +str(la)+ " et M= "+str(LengthTrajVecteur[0]))
+        plt.grid()
+        plt.savefig("Ratios.lambda"+ str(la)+".M"+str(LengthTrajVecteur[0])+".pdf")
+        
+        
+        plt.show()
+    
+    return (StockProbaEnd)

@@ -8,7 +8,7 @@ import time
 ###############################################################################
 plt.close()
 
-P0 = 10
+P0 = 35
 T=4*3600
 la = 1/300
 
@@ -35,7 +35,7 @@ LengthTrajVecteur=[int(5e4) for i in range(length_p)]
 
 
 # Nombre de réalisations indépendantes de l'estimateur
-NbrAlgo = 20
+NbrAlgo = 25
 
 
 # Seuils successifs
@@ -213,6 +213,3 @@ plt.savefig("Ratios.lambda"+ str(la)+".M"+str(LengthTrajVecteur[0])+".pdf")
 
 
 plt.show()
-
-## Fonction
-
