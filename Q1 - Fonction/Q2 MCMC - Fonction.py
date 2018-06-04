@@ -8,8 +8,8 @@ import time
 ###############################################################################
 
 def Q2_MCMC(P0=35, M=int(8e4), display=True, n=int(1e3), ratio=0.1, p=0.7, i=0, T=4*3600, la=1/300, N=[1,3], P=[[1/2],[1/4,1/6,1/12]]):
-    BoundSplit = Q2_MCMC_Seuil(P0, n, ratio, p, i, T, la, N, P)
-    return Q2_MCMC_Body(BoundSplit, P0, M, display, p, i, T, la, N, P)
+    BoundSplit = Q2_MCMC_Seuil(P0, n, ratio, p, i, T, la1, la2, N, P)
+    return Q2_MCMC_Body(BoundSplit, P0, M, display, p, i, T, la1, la2, N, P)
 
 # à partir de 2 array de temps de sauts t1 et t2 et 2 arrays de taille de sauts j1 et j2 -> retourne l'array des temps de sauts ordonnés et la l'array des valeurs des sauts associés.
 
@@ -70,9 +70,12 @@ def Q2_MCMC_Seuil(P0=35, n=int(1e3), ratio=0.1, p=0.7, i=0, T=4*3600, la1=1/660,
     # Calcul des Prix min pour les n chaînes
     minP=np.array([min(P0+np.concatenate([np.arange(1),np.cumsum(fusion(TimeJump1[i], JumpSize1[interval1[i]:interval1[i+1]], TimeJump2[i], JumpSize2[i])[1])])) for i in np.arange(n)])
     
+    #previousSeuil
+    previousSeuil = P0
     # Premier seuil a1
     a = [np.sort(minP)[int(ratio*n)]]
-
+    if(a[-1] == previousSeuil):
+        a[-1] -= 1
     # Valeur initiale de la chaîne
     argmin = np.argwhere(minP<=a[-1])                             # indice des chaînes potentielles
     index = npr.choice(argmin.reshape(argmin.size))               # choix au hasard d'un indice
@@ -83,7 +86,7 @@ def Q2_MCMC_Seuil(P0=35, n=int(1e3), ratio=0.1, p=0.7, i=0, T=4*3600, la1=1/660,
     
     PathPoissonInit=[TimeJump1,JumpSize1,TimeJump2,JumpSize2]     # Chaîne initiale
     
-    while(a[-1] > niveau-1):
+    while(a[-1] > -1):
         PathPoisson = PathPoissonInit
         TimeJumps1 = []
         JumpSizes1 = []
@@ -122,7 +125,11 @@ def Q2_MCMC_Seuil(P0=35, n=int(1e3), ratio=0.1, p=0.7, i=0, T=4*3600, la1=1/660,
                 NewPathPoisson.extend([np.sort(TimeJump2[interval2[n_chain]:interval2[n_chain+1]]), JumpSize2[n_chain]])   
                 PathPoisson = NewPathPoisson # mise à jour de la chaine
             
+        previousSeuil = a[-1]
         a.append(np.sort(minP)[int(ratio*n)])
+        if(a[-1] == previousSeuil):
+            a[-1] -= 1
+            
         print(a[-1])
         # Valeur initiale de la chaîne
         argmin=np.argwhere(minP<=a[-1])                                         # indice des chaînes potentielles

@@ -4,6 +4,8 @@ import scipy.stats as sps
 import time
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+import itertools
+
 
 ###############################################################################
 ## Q3. Changement de loi
@@ -27,15 +29,15 @@ p = P[i]
 val = np.arange(1,m+1)
 prob = p
 
-n=int(1e5)
+n=int(1e4)
 N = 100 # Nombre de sauts par points de la chaîne
 
 # paramètre de la matrice de transition
 alpha = -0.875
 
 #Nouveaux paramètres de transition
-thetaP = -0.75
-thetaM = 0.75
+thetaP = -0.875
+thetaM = -0.875
 
 confiance = 0.95    
 
@@ -95,7 +97,7 @@ plt.show()
 
 
 ## Simu version fonction
-def simu(N, niveau, theta, n=1000, alpha=-0.875, P0=10 ):
+def simu(tP,tM):
     
     TempsDepart = time.time()
     
@@ -108,7 +110,7 @@ def simu(N, niveau, theta, n=1000, alpha=-0.875, P0=10 ):
     
     # Signe des sauts --- /!\ Sous theta /!\
     randTransition=npr.rand(n,N)
-    JumpSign = np.apply_along_axis(generateSign, axis=1, arr=randTransition, a=theta)
+    JumpSign = np.apply_along_axis(generateSign, axis=1, arr=randTransition, tP=tP, tM=tM)
     
     # Calcul des Prix min pour les n chaînes mult par Ln
     minP=np.array([(min(P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[i*N:i*N+N]*JumpSign[i])]))< niveau) * np.product(np.array([Ln(JumpSign[i,j],JumpSign[i,j+1]) for j in np.arange(N-1)])) for i in np.arange(0,n)])
@@ -125,6 +127,23 @@ def simu(N, niveau, theta, n=1000, alpha=-0.875, P0=10 ):
 #         plt.plot([0,N+1],[niveau,niveau],"r")
 #     plt.show()
     return(pEst)
+
+#Tracé 3D en fonction de thetaP et thetaM
+# fig = plt.figure()
+# ax = fig.gca(projection='3d')
+# x=np.linspace(-0.875,0,5)
+# y=np.linspace(-0.875,0,5)
+# 
+# X,Y,Z = [],[],[]
+# 
+# for theta1 in x:
+#     for theta2 in y:
+#         X.append(theta1)
+#         Y.append(theta2)
+#         Z.append(simu(theta1,theta2))
+# 
+# ax.scatter(X,Y,Z)
+# plt.show()
 
 ##
 # sEst=pEst*(1-pEst)

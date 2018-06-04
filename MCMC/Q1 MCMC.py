@@ -8,7 +8,7 @@ import time
 ###############################################################################
 plt.close()
 
-P0 = 10
+P0 = 35
 T = 4*3600
 la = 1/300
 
@@ -29,7 +29,7 @@ prob = np.concatenate([p[::-1],p])
 p, M = 0.7, int(8e4)
 
 # Seuils successif (calculé avec le programme précédent)
-BoundSplit = [2, -1]
+BoundSplit = [24,16,10,2, -1]
 
 K = len(BoundSplit)
 

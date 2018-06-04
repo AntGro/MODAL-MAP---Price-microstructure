@@ -25,7 +25,7 @@ val = np.arange(1,m+1)
 prob = p
 N = 100 # nombre de sauts par chaîne
 
-n=int(1e5)
+n=int(1e4)
 alpha = -0.875
 
 confiance = 0.95    
@@ -78,25 +78,25 @@ bInf=pEst-qSup*sEst/np.sqrt(n)
 bSup=pEst-qInf*sEst/np.sqrt(n)
 
 ##
-# q1=1e-4
-# q2=1-q1
-# 
-# print("MC estimation quartile au niveau {} avec {} simulations".format(q1, n))
-# 
-# TempsDepart = time.time()
-# 
-# # Nombre de sauts sur [0,T], par points de la chaîne
-# NbrJump = npr.poisson(T*la,n)
-# 
-# # Découpage des chaînes
-# interval = np.cumsum(np.concatenate([np.arange(1), NbrJump]))
-# 
-# # Signe des sauts
-# randTransition=npr.rand(np.sum(NbrJump))
-# JumpSign = [generateSign(randTransition[interval[i]:interval[i+1]],alpha) for i in np.arange(n)]
-# 
-# Pt=P0+np.array([np.sum(npr.choice(val,size=NbrJump[i],p=prob)*JumpSign[i]) for i in np.arange(n)])
-# distrib=np.sort(Pt)
-# 
-# print("\nDurée d'exécution "+str(time.time()-TempsDepart))
-# print(distrib[int(q1*n)],distrib[int(q2*n)])
+q1=1e-2
+q2=1-q1
+
+print("MC estimation quartile au niveau {} avec {} simulations".format(q1, n))
+
+TempsDepart = time.time()
+
+NbrJump = n * N
+    
+# Taille des sauts pour toutes les chaînes 
+JumpSizeAbs = npr.choice(val,size=N*n,p=prob)
+
+# Signe des sauts 
+randTransition=npr.rand(n,N)
+JumpSign = np.apply_along_axis(generateSign, axis=1, arr=randTransition, a=alpha)
+
+#Prix
+Pt = [P0+np.sum(JumpSizeAbs[i*N:i*N+N]*JumpSign[i]) for i in np.arange(0,n)]
+distrib=np.sort(Pt)
+
+print("\nDurée d'exécution "+str(time.time()-TempsDepart))
+print(distrib[int(q1*n)],distrib[int(q2*n)])
