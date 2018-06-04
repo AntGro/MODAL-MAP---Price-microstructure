@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 ###############################################################################
 plt.close()
 
-P0 = 10
+P0 = 35
 T = 4*3600
 la1 = 1/660
 la2 = 1/110
@@ -26,8 +26,8 @@ prob = np.concatenate([p[::-1],p])
 ## Paramètre seuil
 p = 0.7             #taux de conservation des sauts pour le processus de Markov
 ratio = 0.1         #objectif pour les seuils : P(X in A_(k+1)|X in A_k) = ratio
-n = (1e4)           #nombre de simulations
-niveau = -5         # On cherche à calculer P(min P_t < niveau)
+n = int(1e3)           #nombre de simulations
+niveau = 0         # On cherche à calculer P(min P_t < niveau)
 
 ## Fonction auxilliaire 
 # à partir de 2 array de temps de sauts t1 et t2 et 2 arrays de taille de sauts j1 et j2 -> retourne l'array des temps de sauts ordonnés et la l'array des valeurs des sauts associés.
@@ -145,7 +145,7 @@ while(a[-1] > niveau-1):
             PathPoisson = NewPathPoisson # mise à jour de la chaine
         
     a.append(np.sort(minP)[int(ratio*n)])
-
+    print(a[-1])
     # Valeur initiale de la chaîne
     argmin=np.argwhere(minP<=a[-1])                                         # indice des chaînes potentielles
     index=npr.choice(argmin.reshape(argmin.size))                           # choix au hasard d'un indice

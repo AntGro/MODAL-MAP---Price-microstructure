@@ -2,6 +2,7 @@ import numpy as np
 import numpy.random as npr
 import scipy.stats as sps
 import time
+import matplotlib.pyplot as plt
 
 ###############################################################################
 ## Q3. Naïf

@@ -34,11 +34,12 @@ K = len(BoundSplit)
 
 print("Les seuils successifs envisagés pour le splitting sont \t")
 print(BoundSplit); print("\n")
+print("Lorsque p = "+ str(p) +" et lambda1 = " + str(la1) + ", lambda2 = "+str(la2))   
+plt.clf()
 
 TempsDepart = time.time()
 
-print("Lorsque p = "+ str(p) +" et lambda1 = " + str(la1) + ", lambda2 = "+str(la2))   
-plt.clf()
+
 
 ## Fonction auxilliaire 
 # à partir de 2 array de temps de sauts t1 et t2 et 2 arrays de taille de sauts j1 et j2 -> retourne l'array des temps de sauts ordonnés et la l'array des valeurs des sauts associés.

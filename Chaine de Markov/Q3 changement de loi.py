@@ -26,14 +26,14 @@ p = P[i]
 val = np.arange(1,m+1)
 prob = p
 
-n=int(1e4)
+n=int(1e5)
 N = 100 # Nombre de sauts par points de la chaîne
 
 # paramètre de la matrice de transition
 alpha = -0.875
 
 #Nouveau paramètre de transition
-theta = -0.8
+theta = -0.75
 
 
 confiance = 0.95    
