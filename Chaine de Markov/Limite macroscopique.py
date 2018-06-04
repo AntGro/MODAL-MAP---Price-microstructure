@@ -9,10 +9,10 @@ import matplotlib.pyplot as plt
 ###############################################################################
 plt.close()
 
-P0 = 10
+P0 = 1000
 niveau = 0
 
-T = 4*3600
+T = 8*3600*250 # Nombre de sauts par points de la chaîne
 la = 1/300
 
 N = [1,3]
@@ -26,14 +26,13 @@ p = P[i]
 val = np.arange(1,m+1)
 prob = p
 
-n=int(1e5)
-N = 100 # Nombre de sauts par points de la chaîne
+n=int(5e1)
 
 # paramètre de la matrice de transition
 alpha = -0.875
 
 #Nouveau paramètre de transition
-theta = -0.875
+theta = 0.91
 
 
 
@@ -60,18 +59,21 @@ def Ln(x, y, a=alpha, t=theta): # retourne le rapport de vraissemblance de P_a p
 ## Simu script
 TempsDepart = time.time()
 
-#nombre total de sauts à simuler
-NbrJump = n * N 
+# Nombre de sauts sur [0,T], par points de la chaîne
+NbrJump = npr.poisson(T*la,n) 
+
+# Découpage des chaînes
+interval = np.cumsum(np.concatenate([np.arange(1), NbrJump]))
 
 # Taille des sauts pour toutes les chaînes 
-JumpSizeAbs = npr.choice(val,size=N*n,p=prob)
+JumpSizeAbs = npr.choice(val,size=np.sum(NbrJump),p=prob)
 
 # Signe des sauts --- /!\ Sous theta /!\
-randTransition=npr.rand(n,N)
-JumpSign = np.apply_along_axis(generateSign, axis=1, arr=randTransition, a=theta)
+randTransition=npr.rand(np.sum(NbrJump))
+JumpSign = [generateSign(randTransition[interval[i]:interval[i+1]],theta) for i in np.arange(n)]
 
 # Calcul des Prix min multipliés par Ln pour chacune des n chaînes 
-minP=np.array([(min(P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[i*N:i*N+N]*JumpSign[i])]))< niveau) * np.product(np.array([Ln(JumpSign[i,j],JumpSign[i,j+1]) for j in np.arange(N-1)])) for i in np.arange(0,n)])
+minP=np.array([(min(P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[interval[i]:interval[i+1]]*JumpSign[i])]))< 0) * np.product(np.array([Ln(JumpSign[i][j],JumpSign[i][j+1]) for j in np.arange(len(JumpSign[i])-1)])) for i in np.arange(0,n)])
 
 #Affichage de l'estimateur de la proba pour ce niveau
 pEst=np.mean(minP)
@@ -81,9 +83,9 @@ print("\nDurée d'exécution "+str(time.time()-TempsDepart))
 print ("La proba estimée est " + str(pEst))
 
 for i in range(5):
-    plt.step(np.arange(N+1),P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[i*N:i*N+N]*JumpSign[i])]))
-    plt.step([0,N+1],[niveau,niveau],"r")
-
+    plt.step(np.arange(NbrJump[i]+1),P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[interval[i]:interval[i+1]]*JumpSign[i])]))
+   
+plt.plot([0,max(NbrJump[:5])+1],[0,0],"r")
 plt.show()
 
 
@@ -91,20 +93,21 @@ plt.show()
 def simu(t):
     
     TempsDepart = time.time()
+    # Nombre de sauts sur [0,T], par points de la chaîne
+    NbrJump = npr.poisson(T*la,n) 
     
-    
-#     N = 100 # Nombre de sauts par points de la chaîne
-    NbrJump = n * N
+    # Découpage des chaînes
+    interval = np.cumsum(np.concatenate([np.arange(1), NbrJump]))
     
     # Taille des sauts pour toutes les chaînes 
-    JumpSizeAbs = npr.choice(val,size=N*n,p=prob)
+    JumpSizeAbs = npr.choice(val,size=np.sum(NbrJump),p=prob)
     
     # Signe des sauts --- /!\ Sous theta /!\
-    randTransition=npr.rand(n,N)
-    JumpSign = np.apply_along_axis(generateSign, axis=1, arr=randTransition, a=t)
+    randTransition=npr.rand(np.sum(NbrJump))
+    JumpSign = [generateSign(randTransition[interval[i]:interval[i+1]],t) for i in np.arange(n)]
     
-    # Calcul des Prix min pour les n chaînes mult par Ln
-    minP=np.array([(min(P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[i*N:i*N+N]*JumpSign[i])]))< niveau) * np.product(np.array([Ln(JumpSign[i,j],JumpSign[i,j+1],alpha,t) for j in np.arange(N-1)])) for i in np.arange(0,n)])
+    # Calcul des Prix min multipliés par Ln pour chacune des n chaînes 
+    minP=np.array([(min(P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[interval[i]:interval[i+1]]*JumpSign[i])]))< 0) * np.product(np.array([Ln(JumpSign[i][j],JumpSign[i][j+1],alpha,t) for j in np.arange(len(JumpSign[i])-1)])) for i in np.arange(0,n)])
     
     #Affichage de l'estimateur de la proba pour ce niveau
     pEst=np.mean(minP)
@@ -150,7 +153,7 @@ plt.show()
 # 
 # # Signe des sauts
 # randTransition=npr.rand(np.sum(NbrJump))
-# JumpSign = [generateSign(randTransition[interval[i]:interval[i+1]],alpha) for i in np.arange(n)]
+# JumpSign = [generateSign(randTransition[interval[i]:interval[i+1]],theta) for i in np.arange(n)]
 # 
 # Pt=P0+np.array([np.sum(npr.choice(val,size=NbrJump[i],p=prob)*JumpSign[i]) for i in np.arange(n)])
 # distrib=np.sort(Pt)
@@ -162,21 +165,21 @@ plt.show()
 
 def process(seuil,t):
         
-#     N = 100 # Nombre de sauts par points de la chaîne
-    NbrJump = n * N
+    #Nombre de sauts sur [0,T], par points de la chaîne
+    NbrJump = npr.poisson(T*la,n) 
+    
+    # Découpage des chaînes
+    interval = np.cumsum(np.concatenate([np.arange(1), NbrJump]))
     
     # Taille des sauts pour toutes les chaînes 
-    JumpSizeAbs = npr.choice(val,size=N*n,p=prob)
+    JumpSizeAbs = npr.choice(val,size=np.sum(NbrJump),p=prob)
     
     # Signe des sauts --- /!\ Sous theta /!\
-    randTransition=npr.rand(n,N)
-    JumpSign = np.apply_along_axis(generateSign, axis=1, arr=randTransition, a=t)
-    
+    randTransition=npr.rand(np.sum(NbrJump))
+    JumpSign = [generateSign(randTransition[interval[i]:interval[i+1]],t) for i in np.arange(n)]
     # Calcul des Prix min pour les n chaînes mult par Ln
-    res= np.array([(P0+np.sum(JumpSizeAbs[i*N:i*N+N]*JumpSign[i])) for i in np.arange(0,n)])
-    print(res)
-    sIS=np.array([np.product(np.array([Ln(JumpSign[i,j],JumpSign[i,j+1],alpha,t) for j in np.arange(N-1)])) for i in np.arange(0,n)])
-    print(np.sum(sIS))
+    res= np.array([(P0+np.sum(JumpSizeAbs[interval[i]:interval[i+1]]*JumpSign[i])) for i in np.arange(0,n)])
+    sIS=np.array([np.product(np.array([Ln(JumpSign[i][j],JumpSign[i][j+1],alpha,t) for j in np.arange(len(JumpSign[i])-1)])) for i in np.arange(0,n)])
     
     indexSort=np.argsort(res)
     sIsSort=sIS[indexSort]
@@ -185,10 +188,10 @@ def process(seuil,t):
 
     return res[indexSort[index]]
 
-theta=np.linspace(-0.875,-0.6,15)
-y=[process(0.01,th) for th in theta]
-plt.plot(theta,y)
-plt.show()
+# theta=np.linspace(-0.875,-0.6,15)
+# y=[process(0.01,th) for th in theta]
+# plt.plot(theta,y)
+# plt.show()
 
 
 

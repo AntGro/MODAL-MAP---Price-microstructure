@@ -6,7 +6,7 @@ import time
 ## Q1. Naïf
 ###############################################################################
 P0 = 10
-niveau = -6
+niveau = 0
 
 T = 4*3600
 la = 1/300
@@ -22,7 +22,7 @@ p = P[i]
 val = np.delete(np.arange(-m,m+1),m)
 prob = np.concatenate([p[::-1],p])
 
-n=int(1e4)
+n=int(1e6)
 alpha=0.95
 
 
@@ -64,18 +64,18 @@ print("La probabilité associée à la distribution {0} avec P0={1} est estimée
 ##----------
 # Estimation des quartiles
 ##----------
-q1=1e-7
-q2=1-q1
-
-print("MC estimation quartile au niveau {} avec {} simulations".format(q1, n))
-
-TempsDepart = time.time()
-
-# Nombre de sauts sur [0,T], par points de la chaîne
-NbrJump = npr.poisson(T*la,n)
-
-Pt=P0+np.array([np.sum(npr.choice(val,size=NbrJump[i],p=prob)) for i in np.arange(n)])
-distrib=np.sort(Pt)
-
-print("\n Durée d'exécution "+str(time.time()-TempsDepart))
-print(distrib[int(q1*n)],distrib[int(q2*n)])
+# q1=1e-7
+# q2=1-q1
+# 
+# print("MC estimation quartile au niveau {} avec {} simulations".format(q1, n))
+# 
+# TempsDepart = time.time()
+# 
+# # Nombre de sauts sur [0,T], par points de la chaîne
+# NbrJump = npr.poisson(T*la,n)
+# 
+# Pt=P0+np.array([np.sum(npr.choice(val,size=NbrJump[i],p=prob)) for i in np.arange(n)])
+# distrib=np.sort(Pt)
+# 
+# print("\n Durée d'exécution "+str(time.time()-TempsDepart))
+# print(distrib[int(q1*n)],distrib[int(q2*n)])
