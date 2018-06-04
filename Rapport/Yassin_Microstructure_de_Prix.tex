@@ -30,7 +30,7 @@ Alors un intervalle de confiance à $95%$ est donné par : $[P_{est}-2*P_{est}(1
 $
 $
 On regroupe les résultats pour différents paramètres dans le tableau suivant: \\
-Tableau: P0; i=0 ou 3 ;M; Pest; Intervalle de conf
+Tableau: P0; i=0 ou 3 ;M=10^6; Pest; Intervalle de conf
 $
 
 \subsection{Création des classifieurs faibles}
@@ -58,16 +58,41 @@ On note alors un plateau dans la région A COMPLETER. On cherche dans un deuxiè
 On obtient $\theta= A COMPLETER$
 
 TABLEAU DE RESULTAT
-theta=0, P0=10
+$M1=86 * 10^6
+M3=50 * 10^6
+i=1, i=3
+theta=opt, P0=10
 theta=val opt, P0=35
-
+$
 \subsection{Calcul naïf du quantile}
 Dans cette partie on veut estimer des quantiles du prix final $p_{T}$ à différents niveaux. Une première approche consiste à utiliser l'estimateur des quantiles empiriques. Il s'agit donc de simuler différentes M processus de Poisson et de réordonner les prix finaux obtenus par ordre croissant : $p_{T}^{1}, p_{T}^{2}..., p_{T}^{M}$. Le quantile empirique au niveau $\alpha$ est alors : $p_{T}^{\left \lceil M\alpha  \right \rceil} $
 
 On obtient les résultats suivants pour différents paramètres:
 $i=1 ou 3, P0=35, alpha=10^-4, 5, 6
-$
+$ box plot + histogramme
+
 \subsection{Calcul du quantile avec changement de loi}
+
+
+
+On obtient les résultats suivants pour différents paramètres:
+$i=1 ou 3, P0=35, alpha=10^-4, 5, 6	
+$ box plot + histogramme
+
+\section{Superposition de processus}
+k
+
+
+
+\subsection{Simulation par un Monte-Carlo naïf}
+$Tableau: P0; i=0 ou 3 ;M=10^6; Pest; Intervalle de conf
+$
+
+\subsection{Quantile}
+
+\subsection{Changement de loi}
+
+\section{Modélisation markovienne}
 
 
 

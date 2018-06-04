@@ -3,7 +3,6 @@ import numpy.random as npr
 import scipy.stats as sps
 import time
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 
 ###############################################################################
 ## Q3. Changement de loi
@@ -33,9 +32,13 @@ N = 100 # Nombre de sauts par points de la chaîne
 # paramètre de la matrice de transition
 alpha = -0.875
 
-#Nouveaux paramètres de transition
-thetaP = -0.75
-thetaM = 0.75
+#Nouveau paramètre de transition
+<<<<<<< HEAD
+theta = -0.875
+=======
+theta = -0.75
+>>>>>>> 94b338787cea5e239f6957fb848f6110b45e0c16
+
 
 confiance = 0.95    
 
@@ -44,24 +47,17 @@ confiance = 0.95
 ##----------
 
  #étant donné un array de nombres aléatoires 'rand' renvoie génère la chaîne de Markov des signes suivant la matrice de transition de paramètre alpha
-def generateSign(rand,tP=thetaP, tM=thetaM):
+def generateSign(rand,a=alpha):
     s=[2*(rand[0]<0.5)-1]
     for i in np.arange(1,rand.size):
-        if(s[-1]==1):
-            s.append((2*(rand[i]<((1+s[-1]*tP)/2))-1))
-        else:
-            s.append((2*(rand[i]<((1+s[-1]*tM)/2))-1))
-        
+        s.append((2*(rand[i]<((1+s[-1]*a)/2))-1))
     return np.array(s)
 
-def Ln(x, y, a=alpha, tP=thetaP, tM=thetaM): # retourne le rapport de vraissemblance de P_a par rapport à P_t
+def Ln(x, y, a=alpha, t=theta): # retourne le rapport de vraissemblance de P_a par rapport à P_t
     if (x == y):
-        if(x==1):
-            return(1+a)/(1+tP)
-        return (1+a)/(1+tM)
-    if(x==1):
-        return (1-a)/(1-tP)
-    return (1-a)/(1-tM)
+        return (1+a)/(1+t)
+    return (1-a)/(1-t)
+
 
 
 ## Simu script
@@ -75,7 +71,7 @@ JumpSizeAbs = npr.choice(val,size=N*n,p=prob)
 
 # Signe des sauts --- /!\ Sous theta /!\
 randTransition=npr.rand(n,N)
-JumpSign = np.apply_along_axis(generateSign, axis=1, arr=randTransition, tP=thetaP, tM=thetaM)
+JumpSign = np.apply_along_axis(generateSign, axis=1, arr=randTransition, a=theta)
 
 # Calcul des Prix min multipliés par Ln pour chacune des n chaînes 
 minP=np.array([(min(P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[i*N:i*N+N]*JumpSign[i])]))< niveau) * np.product(np.array([Ln(JumpSign[i,j],JumpSign[i,j+1]) for j in np.arange(N-1)])) for i in np.arange(0,n)])
@@ -95,7 +91,7 @@ plt.show()
 
 
 ## Simu version fonction
-def simu(N, niveau, theta, n=1000, alpha=-0.875, P0=10 ):
+def simu(t):
     
     TempsDepart = time.time()
     
@@ -108,7 +104,7 @@ def simu(N, niveau, theta, n=1000, alpha=-0.875, P0=10 ):
     
     # Signe des sauts --- /!\ Sous theta /!\
     randTransition=npr.rand(n,N)
-    JumpSign = np.apply_along_axis(generateSign, axis=1, arr=randTransition, a=theta)
+    JumpSign = np.apply_along_axis(generateSign, axis=1, arr=randTransition, a=t)
     
     # Calcul des Prix min pour les n chaînes mult par Ln
     minP=np.array([(min(P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[i*N:i*N+N]*JumpSign[i])]))< niveau) * np.product(np.array([Ln(JumpSign[i,j],JumpSign[i,j+1]) for j in np.arange(N-1)])) for i in np.arange(0,n)])
@@ -125,6 +121,12 @@ def simu(N, niveau, theta, n=1000, alpha=-0.875, P0=10 ):
 #         plt.plot([0,N+1],[niveau,niveau],"r")
 #     plt.show()
     return(pEst)
+
+theta1=np.linspace(-0.6,-0.875,50)
+y=[simu(th) for th in theta1]
+y2=np.std(np.array([simu(-0.6) for k in range(30)]))
+plt.plot(theta1,y)
+plt.show()
 
 ##
 # sEst=pEst*(1-pEst)
@@ -158,3 +160,39 @@ def simu(N, niveau, theta, n=1000, alpha=-0.875, P0=10 ):
 # 
 # print("\nDurée d'exécution "+str(time.time()-TempsDepart))
 # print(distrib[int(q1*n)],distrib[int(q2*n)])
+
+##Quantile
+
+def process(seuil,t):
+        
+#     N = 100 # Nombre de sauts par points de la chaîne
+    NbrJump = n * N
+    
+    # Taille des sauts pour toutes les chaînes 
+    JumpSizeAbs = npr.choice(val,size=N*n,p=prob)
+    
+    # Signe des sauts --- /!\ Sous theta /!\
+    randTransition=npr.rand(n,N)
+    JumpSign = np.apply_along_axis(generateSign, axis=1, arr=randTransition, a=t)
+    
+    # Calcul des Prix min pour les n chaînes mult par Ln
+    res= np.array([(P0+np.sum(JumpSizeAbs[i*N:i*N+N]*JumpSign[i])) for i in np.arange(0,n)])
+    print(res)
+    sIS=np.array([np.product(np.array([Ln(JumpSign[i,j],JumpSign[i,j+1]) for j in np.arange(N-1)])) for i in np.arange(0,n)])
+    print(np.sum(sIS))
+    
+    indexSort=np.argsort(res)
+    sIsSort=sIS[indexSort]
+    Y=np.cumsum(sIsSort)
+    index=np.argwhere(Y>=n*seuil)[0][0]
+
+    return res[indexSort[index]]
+
+theta=np.linspace(-0.875,-0.6,15)
+y=[process(0.01,th) for th in theta]
+plt.plot(theta,y)
+plt.show()
+
+
+
+
