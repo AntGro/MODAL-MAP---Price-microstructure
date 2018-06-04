@@ -18,9 +18,20 @@
 \begin{document}
 \maketitle
 \section{Une modélisation simplifiée}
-\subsection{Titre subsection}
+\subsection{Simulation par un Monte-Carlo naïf}
 
-Q1. Afin d'obtenir l'image intégrale à partir d'une matrice correspondant à une image, nous avons procédé, comme le suggère l’énoncé, par récurrence, en utilisant un principe de programmation dynamique.
+inf P<0
+On commence par un modèle simple où on simule M processus de Poisson associés à notre modèle. On détermine ensuite $P_{est}=\mathbb{P}(\inf_{t\leq T} P_{t}< 0)$ par un Monte-Carlo naïf qui consiste à utiliser l'estimateur: $P_{est}=\frac{1}{M}\sum 1_{ \inf_{t\leq T} P_{t}< 0}$ \\
+
+Pour obtenir un intervalle de confiance, on utilise le résultat qui affirme que : 
+$\sqrt{M}(\frac{1}{M}\sum 1_{ \inf_{t\leq T} P_{t}< 0}-\mathbb{P}(\inf_{t\leq T} P_{t}< 0)) \Rightarrow N(0,\mathbb{P}(\inf_{t\leq T} P_{t}< 0)(1-\mathbb{P}(\inf_{t\leq T} P_{t}< 0))$ \\
+
+Alors un intervalle de confiance à $95%$ est donné par : $[P_{est}-2*P_{est}(1-P_{est});P_{est}+2*P_{est}(1-P_{est})]$ \\
+$
+$
+On regroupe les résultats pour différents paramètres dans le tableau suivant: \\
+Tableau: P0; i=0 ou 3 ;M; Pest; Intervalle de conf
+$
 
 \subsection{Création des classifieurs faibles}
 
@@ -32,6 +43,34 @@ Q2. Nous n’avons considéré ici que des caractéristiques « carré » (ayant
 	&= 5\times\frac{21 \times 22}{2} + \frac{21 \times 22 \times 43}{6} \\
 	&= 4466
 \end{align*}
+
+\subsection{Simulation par changement de loi}
+
+Il s'agit maintenant d'utiliser une méthode qui permet d'évaluer correctement la probabilité quand l'évènement est rare et que le résultat donné par un Monte-Carlo naïf n'est plus pertinent (ce qui est ici le cas pour $P_{0}=35$. On va alors procéder à un changement de loi via la transformation d'Esscher. L'idée de cette technique est de modifier les probabilités de manière à rendre l'évènement étudiée moins rare. Dans ce cas, on veut que le prix diminue. Il faut donc que les sauts négatifs soient privilégiés. 
+
+DESCRIPTION DE LA TRANSFORMATION DESSCHER
+
+On choisit $\theta$ qui minimise la variance de l'estimation de la probabilité. Pour cela, on commence par tracer $P_{est}$ en fonction de $\theta$. On obtient le graphique suivant :
+
+INSERER GRAPHIQUE.
+
+On note alors un plateau dans la région A COMPLETER. On cherche dans un deuxième temps le $\theta$ de cette région qui minimise la variance de l'estimation. 
+On obtient $\theta= A COMPLETER$
+
+TABLEAU DE RESULTAT
+theta=0, P0=10
+theta=val opt, P0=35
+
+\subsection{Calcul naïf du quantile}
+Dans cette partie on veut estimer des quantiles du prix final $p_{T}$ à différents niveaux. Une première approche consiste à utiliser l'estimateur des quantiles empiriques. Il s'agit donc de simuler différentes M processus de Poisson et de réordonner les prix finaux obtenus par ordre croissant : $p_{T}^{1}, p_{T}^{2}..., p_{T}^{M}$. Le quantile empirique au niveau $\alpha$ est alors : $p_{T}^{\left \lceil M\alpha  \right \rceil} $
+
+On obtient les résultats suivants pour différents paramètres:
+$i=1 ou 3, P0=35, alpha=10^-4, 5, 6
+$
+\subsection{Calcul du quantile avec changement de loi}
+
+
+
 
 Le calcul des caractéristiques se fait de façon parallèle avec MPI :\\
 
@@ -61,9 +100,9 @@ Nous avons considéré l'évolution des quantités $  \frac{\Vert(w_1^{k+1} - w_
 \begin{itemize}
 	\item  Choix de $K$ : en traçant l'évolution de $  \frac{\Vert(w_2^{k+1} - w_2^{k})\Vert}{\Vert w_2^{k})\Vert}$ pour $K = 200$, $2000$ et $10000$, on constate que cette quantité converge pour différentes valeurs de $\epsilon$ et que le comportement de $  \frac{\Vert(w_1^{k+1} - w_1^{k})\Vert}{\Vert w_1^{k})\Vert}$ est non convergent pour ces trois valeurs de $K$. Il semble donc judicieux de prendre $K$ de l'ordre de $2000$. \\
 
-\includegraphics[width=15cm]{"Fig1 Cv K=200"}\\
-\includegraphics[width=15cm]{"Fig2 Cv K=2000"}\\
-\includegraphics[width=15cm]{"Fig3 Cv K=10000"}\\
+includegraphics[width=15cm]{"Fig1 Cv K=200"}\\
+includegraphics[width=15cm]{"Fig2 Cv K=2000"}\\
+includegraphics[width=15cm]{"Fig3 Cv K=10000"}\\
 	
 	\item Choix de $\epsilon$ : En raisonnant sur les ordres de grandeurs des paramètres (et notamment de $X_{ki} \sim 10000$) nous avons distingué deux régimes distincts :\\
 	
@@ -72,7 +111,7 @@ Nous avons considéré l'évolution des quantités $  \frac{\Vert(w_1^{k+1} - w_
 		
 		\item Pour $\epsilon \ll \frac{1}{10000}$ : $w_{i2}$ reste de l'ordre de $\epsilon$ et $w_{i1}$ est de l'ordre de l'unité (son initialisation). Là encore, $w_{2i}$ ne joue globalement pas de rôle dans la classification qui est déterminée uniquement par le signe de $w_{i1} \gg w_{i2}$ (car $1 \gg \epsilon$). De ce fait, la valeur particulière de $\epsilon$ dans ce régime a très peu d'impact sur le résultat (le classifieur est déterminé par la valeur de $w_{i1}$ qui varie très faiblement autour de sa valeur initiale, indépendante de $\epsilon$ - ce qui tend d'ailleurs à rendre l'entraînement superflu). On observe donc une relative stabilité de $w_1$ dans ce régime ($  \frac{\Vert(w_1^{k+1} - w_1^{k})\Vert}{\Vert w_1^{k})\Vert} \ll 1$). \\
 	\end{itemize}
-\includegraphics[width=15cm]{"Fig4 Cv w1 2 regimes"}\\
+includegraphics[width=15cm]{"Fig4 Cv w1 2 regimes"}\\
 
 
 \end{itemize}
@@ -88,7 +127,7 @@ L’idée est de finalement obtenir une combinaison de classifieurs qui sont eff
 Pour mettre en oeuvre cette méthode, nous avons utilisé la fonction $\frac{1}{2}\log(\frac{1-x}{x})$ qui nous permet d'obtenir une nouvelle pondération en fonction de l’erreur pondérée du meilleur classifieur.\\
 
 \begin{center}
-\includegraphics[width=10cm]{"Fig5 alpha"}\\
+includegraphics[width=10cm]{"Fig5 alpha"}\\
 \end{center}
 
 Nous voyons que cette fonction change de signe autour d’une erreur de 0.5 et cela a conduit à la limitation du nombre de classifieurs faibles sélectionnés par notre algorithme. En effet, un classifieur avec une erreur un peu plus faible que cette valeur était sélectionné puis, à cause de la modification des poids, il devenait moins efficace et passait à une erreur supérieure à 0.5 et donc, lorsqu’il était repris, on améliorait cette fois ses performances, le faisant à nouveau passer sous la barre de 0.5 d’erreur pondérée. Cette apparition de cycle nous a empêché d’obtenir une combianaison riche de classifieurs puisqu’en général nous avons obtenu moins d’une dizaine de classifieurs, indépendamment de la valeur de N.\\
