@@ -113,7 +113,7 @@ def simu(tP,tM):
     JumpSign = np.apply_along_axis(generateSign, axis=1, arr=randTransition, tP=tP, tM=tM)
     
     # Calcul des Prix min pour les n chaînes mult par Ln
-    minP=np.array([(min(P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[i*N:i*N+N]*JumpSign[i])]))< niveau) * np.product(np.array([Ln(JumpSign[i,j],JumpSign[i,j+1]) for j in np.arange(N-1)])) for i in np.arange(0,n)])
+    minP=np.array([(min(P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[i*N:i*N+N]*JumpSign[i])]))< niveau) * np.product(np.array([Ln(JumpSign[i,j],JumpSign[i,j+1],alpha,tP,tM) for j in np.arange(N-1)])) for i in np.arange(0,n)])
     
     #Affichage de l'estimateur de la proba pour ce niveau
     pEst=np.mean(minP)
@@ -129,21 +129,21 @@ def simu(tP,tM):
     return(pEst)
 
 #Tracé 3D en fonction de thetaP et thetaM
-# fig = plt.figure()
-# ax = fig.gca(projection='3d')
-# x=np.linspace(-0.875,0,5)
-# y=np.linspace(-0.875,0,5)
-# 
-# X,Y,Z = [],[],[]
-# 
-# for theta1 in x:
-#     for theta2 in y:
-#         X.append(theta1)
-#         Y.append(theta2)
-#         Z.append(simu(theta1,theta2))
-# 
-# ax.scatter(X,Y,Z)
-# plt.show()
+fig = plt.figure()
+ax = fig.gca(projection='3d')
+x=np.linspace(-0.875,0,5)
+y=np.linspace(-0.875,0,5)
+
+X,Y,Z = [],[],[]
+
+for theta1 in x:
+    for theta2 in y:
+        X.append(theta1)
+        Y.append(theta2)
+        Z.append(simu(theta1,theta2))
+
+ax.scatter(X,Y,Z)
+plt.show()
 
 ##
 # sEst=pEst*(1-pEst)

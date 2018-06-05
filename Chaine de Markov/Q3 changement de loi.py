@@ -119,20 +119,21 @@ def simu(t):
 #     plt.show()
     return(pEst)
 
+sEst=np.std(minP)
+
+qInf=sps.norm.ppf((1-confiance)/2)
+qSup=sps.norm.ppf((1+confiance)/2)
+
+bInf=pEst-qSup*sEst/np.sqrt(n)
+bSup=pEst-qInf*sEst/np.sqrt(n)
+
 theta1=np.linspace(-0.6,-0.875,50)
 y=[simu(th) for th in theta1]
 y2=np.std(np.array([simu(-0.6) for k in range(30)]))
 plt.plot(theta1,y)
 plt.show()
 
-##
-# sEst=pEst*(1-pEst)
-# 
-# qInf=sps.norm.ppf((1-confiance)/2)
-# qSup=sps.norm.ppf((1+confiance)/2)
-# 
-# bInf=pEst-qSup*sEst/np.sqrt(n)
-# bSup=pEst-qInf*sEst/np.sqrt(n)
+
 
 ##
 # q1=1e-4

@@ -70,7 +70,7 @@ def Q2_MCMC_Seuil(P0=35, n=int(1e3), ratio=0.1, p=0.7, i=0, T=4*3600, la1=1/660,
     # Calcul des Prix min pour les n chaînes
     minP=np.array([min(P0+np.concatenate([np.arange(1),np.cumsum(fusion(TimeJump1[i], JumpSize1[interval1[i]:interval1[i+1]], TimeJump2[i], JumpSize2[i])[1])])) for i in np.arange(n)])
     
-    #previousSeuil
+    #previousSeuil (on veut que les seuils soient strictement décroissants)
     previousSeuil = P0
     # Premier seuil a1
     a = [np.sort(minP)[int(ratio*n)]]
@@ -127,9 +127,12 @@ def Q2_MCMC_Seuil(P0=35, n=int(1e3), ratio=0.1, p=0.7, i=0, T=4*3600, la1=1/660,
             
         previousSeuil = a[-1]
         a.append(np.sort(minP)[int(ratio*n)])
-        if(a[-1] == previousSeuil):
+        if(a[-1] == previousSeuil and min(minP) < a[-1]):
             a[-1] -= 1
-            
+        else :
+            del a[-1]
+            n = int(1.5*n) #on doit faire plus de simulations pour obtenir un nouveau seuilpreviousSeuil = a[-1]
+        
         print(a[-1])
         # Valeur initiale de la chaîne
         argmin=np.argwhere(minP<=a[-1])                                         # indice des chaînes potentielles
@@ -318,7 +321,7 @@ def Q2_MCMCIC(BoundSplit, P0=35, pVecteur=[0.7], NbrAlgo=25, M=int(5e4), display
     for n_p in np.arange(length_p):
         p = pVecteur[n_p]
         LengthTraj = LengthTrajVecteur[n_p]
-        print("Lorsque p = "+ str(p) +" et lambda = " + str(la))   
+        print("Lorsque p = "+ str(p) +" et lambda1 = " + str(la1) + ", lambda2 = "+str(la2))   
         plt.clf()
         
         # Boucle sur les differents runs independants

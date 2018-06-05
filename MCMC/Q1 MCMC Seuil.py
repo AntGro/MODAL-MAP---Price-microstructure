@@ -127,7 +127,9 @@ while(a[-1] > niveau-1):
     JumpSize=JumpSizes[index] # Taille de sauts
 
     PathPoissonInit=[TimeJump,JumpSize] # Chaîne initiale
-
+    
+    print(a[-1])
+    
 a[-1]=niveau-1
 
 print("Valeur des seuils : {}".format(a))

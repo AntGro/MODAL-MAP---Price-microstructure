@@ -18,7 +18,7 @@ la = 1/300
 N = [1,3]
 P = [[1], [1/2,1/3,1/6]]
 
-i=0
+i=1
 
 m = N[i]
 p = P[i]
@@ -32,7 +32,7 @@ n=int(5e1)
 alpha = -0.875
 
 #Nouveau paramètre de transition
-theta = 0.91
+theta = 0.5
 
 
 
@@ -128,14 +128,13 @@ y2=np.std(np.array([simu(-0.6) for k in range(30)]))
 plt.plot(theta1,y)
 plt.show()
 
-##
-# sEst=pEst*(1-pEst)
-# 
-# qInf=sps.norm.ppf((1-confiance)/2)
-# qSup=sps.norm.ppf((1+confiance)/2)
-# 
-# bInf=pEst-qSup*sEst/np.sqrt(n)
-# bSup=pEst-qInf*sEst/np.sqrt(n)
+sEst=np.std(minP)
+
+qInf=sps.norm.ppf((1-confiance)/2)
+qSup=sps.norm.ppf((1+confiance)/2)
+
+bInf=pEst-qSup*sEst/np.sqrt(n)
+bSup=pEst-qInf*sEst/np.sqrt(n)
 
 ##
 # q1=1e-4

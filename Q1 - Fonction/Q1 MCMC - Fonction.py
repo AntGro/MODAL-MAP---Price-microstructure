@@ -56,9 +56,13 @@ def Q1_MCMC_Seuil(P0=35, niveau=0, n=int(1e3), ratio=0.1, p=0.7, i=0, T=4*3600, 
     interval = np.cumsum(np.concatenate([np.arange(1),NbrJump]))
     minP = np.array([min(P0+np.concatenate([np.arange(1),np.cumsum(JumpSize[interval[i]:interval[i+1]])])) for i in np.arange(n)])
     
+    #previousSeuil (on veut que les seuils soient strictement décroissants)
+    previousSeuil = P0
     # Premier seuil a1
     a = [np.sort(minP)[int(ratio*n)]]
-    
+    if(a[-1] == previousSeuil):
+        a[-1] -= 1
+        
     # Valeur initiale de la chaîne
     argmin = np.argwhere(minP<=a[-1])                               # indice des chaînes potentielles
     index = npr.choice(argmin.reshape(argmin.size))                 # choix au hasard d'un indice
@@ -66,6 +70,7 @@ def Q1_MCMC_Seuil(P0=35, niveau=0, n=int(1e3), ratio=0.1, p=0.7, i=0, T=4*3600, 
     JumpSize = JumpSize[interval[index]:interval[index+1]]          # Taille de sauts
     
     PathPoissonInit = [TimeJump,JumpSize]                           # Chaîne initiale
+    step = 1
     
     while(a[-1] > niveau-1):
         PathPoisson = PathPoissonInit
@@ -99,8 +104,16 @@ def Q1_MCMC_Seuil(P0=35, niveau=0, n=int(1e3), ratio=0.1, p=0.7, i=0, T=4*3600, 
                 PathPoisson = NewPathPoisson    # mise à jour de la chaine
         
         # Valeur initiale de la chaîne  
+        previousSeuil = a[-1]
         a.append(np.sort(minP)[int(ratio*n)])
-    
+        if(a[-1] == previousSeuil and min(minP) < a[-1]):
+            a[-1] -= 1
+        elif(a[-1] == previousSeuil):
+            del a[-1]
+            n = int(1.5*n) #on doit faire plus de simulations pour obtenir un nouveau seuilpreviousSeuil = a[-1]
+        
+        print("Seuil à l'étape {} : {}".format(step,a[-1]))
+        
         # Valeur initiale de la chaîne
         argmin=np.argwhere(minP<=a[-1]) # indice des chaînes potentielles
         index=npr.choice(argmin.reshape(argmin.size)) # choix au hasard d'un indice
@@ -108,7 +121,8 @@ def Q1_MCMC_Seuil(P0=35, niveau=0, n=int(1e3), ratio=0.1, p=0.7, i=0, T=4*3600, 
         JumpSize=JumpSizes[index] # Taille de sauts
     
         PathPoissonInit=[TimeJump,JumpSize] # Chaîne initiale
-    
+        step += 1
+        
     a[-1]=niveau-1
     
     print("Valeur des seuils : {}".format(a))
@@ -249,7 +263,7 @@ def Q1_MCMC_Body(BoundSplit, P0=35, M=int(8e4), display=True, p=0.7, i=0, T=4*36
     
     return ProbaEnd
     
-def Q1_MCMCIC(BoundSplit, P0=35, niveau=0, pVecteur=[0.7], NbrAlgo=25, M=int(5e4), display=True, p=0.7, i=0, T=4*3600, la=1/300, N=[1,3], P=[[1/2],[1/4,1/6,1/12]]):
+def Q1_MCMCIC(P0=35, niveau=0, pVecteur=[0.7], NbrAlgo=25, M=int(5e4), display=True, i=0, T=4*3600, la=1/300, N=[1,3], P=[[1/2],[1/4,1/6,1/12]]):
     plt.close()
     
     val=np.delete(np.arange(-N[i],N[i]+1),N[i])
@@ -258,16 +272,16 @@ def Q1_MCMCIC(BoundSplit, P0=35, niveau=0, pVecteur=[0.7], NbrAlgo=25, M=int(5e4
     length_p = len(pVecteur)
     LengthTrajVecteur=[M for i in range(length_p)]
 
-    K = len(BoundSplit)
-    
     TempsDepart = time.time()
 
     StockProbaEnd = np.zeros((length_p,NbrAlgo))
     # Boucle sur les valeurs de p
     for n_p in np.arange(length_p):
         p = pVecteur[n_p]
+        BoundSplit = Q1_MCMC_Seuil(P0, 0,int(1e3),0.1,p, i, T, la, N, P)
         LengthTraj = LengthTrajVecteur[n_p]
-        print("Lorsque p = "+ str(p) +" et lambda = " + str(la))   
+        print("Lorsque p = "+ str(p) +" et lambda = " + str(la))  
+        print("\t BoundSplit : " + str(BoundSplit))  
         plt.clf()
         
         # Boucle sur les differents runs independants
