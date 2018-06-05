@@ -11,93 +11,148 @@
 \graphicspath{{Image/}}
 
 \title{Microstructure des prix financiers}
-\author{Antoine GROSNIT et Yassin Hamaoui}
+\author{Antoine Grosnit et Yassin Hamaoui}
 \subtitle{MODAL - MAP474D}
 \date{Juin 2018}
 
 \begin{document}
 \maketitle
 \section{Une modélisation simplifiée}
-\subsection{Titre subsection}
 
-Q1. Afin d'obtenir l'image intégrale à partir d'une matrice correspondant à une image, nous avons procédé, comme le suggère l’énoncé, par récurrence, en utilisant un principe de programmation dynamique.
+\subsection{Prix négatifs}
 
-\subsection{Création des classifieurs faibles}
+\subsubsection{Simulation par un Monte-Carlo naïf}
 
-Q2. Nous n’avons considéré ici que des caractéristiques « carré » (ayant le même nombre de pixels en longueur et en largeur). On obtient alors, pour une zone de $92 \times 112$, un côté minimal de $8$ pixels et un incrément de position et de taille de $4$ pixels, $4466$ caractéristiques (et de manière générale il y en a $O(n^3)$ où $n$ est la longueur de l'image) :
+$inf P<0$
+On commence par un modèle simple où on simule M processus de Poisson associés à notre modèle. On détermine ensuite $P_{est}=\mathbb{P}(\inf_{t\leq T} P_{t}< 0)$ par un Monte-Carlo naïf qui consiste à utiliser l'estimateur: $P_{est}=\frac{1}{M}\sum 1_{ \inf_{t\leq T} P_{t}< 0}$ \\
 
-\begin{align*}
-	\sum_{i=2}^{22} (28-i)(23-i) &= \sum_{i=1}^{21} (5+i)i \\
-	&= 5\sum_{i=1}^{21} i + \sum_{i=1}^{21} i^2\\
-	&= 5\times\frac{21 \times 22}{2} + \frac{21 \times 22 \times 43}{6} \\
-	&= 4466
-\end{align*}
+Pour obtenir un intervalle de confiance, on utilise le résultat qui affirme que : 
+$\sqrt{M}(\frac{1}{M}\sum 1_{ \inf_{t\leq T} P_{t}< 0}-\mathbb{P}(\inf_{t\leq T} P_{t}< 0)) \Rightarrow N(0,\mathbb{P}(\inf_{t\leq T} P_{t}< 0)(1-\mathbb{P}(\inf_{t\leq T} P_{t}< 0))$ \\
 
-Le calcul des caractéristiques se fait de façon parallèle avec MPI :\\
+Alors un intervalle de confiance à $0.95$ est donné par : $[P_{est}-2*P_{est}(1-P_{est});P_{est}+2*P_{est}(1-P_{est})$ 
 
+
+On regroupe les résultats pour différents paramètres dans le tableau suivant: \\
+Tableau: $P0; i=0 ou 3 ;M=10^6; Pest; Intervalle de conf$
+
+
+
+\subsubsection{Simulation par changement de loi}
+
+Il s'agit maintenant d'utiliser une méthode qui permet d'évaluer correctement la probabilité quand l'évènement est rare et que le résultat donné par un Monte-Carlo naïf n'est plus pertinent (ce qui est ici le cas pour $P_{0}=35$. On va alors procéder à un changement de loi via la transformation d'Esscher. L'idée de cette technique est de modifier les probabilités de manière à rendre l'évènement étudiée moins rare. Dans ce cas, on veut que le prix diminue. Il faut donc que les sauts négatifs soient privilégiés. 
+
+DESCRIPTION DE LA TRANSFORMATION DESSCHER
+
+On choisit $\theta$ qui minimise la variance de l'estimation de la probabilité. Pour cela, on commence par tracer $P_{est}$ en fonction de $\theta$. On obtient le graphique suivant :
+
+INSERER GRAPHIQUE.
+
+On note alors un plateau dans la région A COMPLETER. On cherche dans un deuxième temps le $\theta$ de cette région qui minimise la variance de l'estimation. 
+On obtient $\theta= A COMPLETER$
+
+TABLEAU DE RESULTAT
+$M1=86 * 10^6$
+$M3=50 * 10^6$
+$i=1, i=3$
+$theta=opt, P0=10$
+$theta=val opt, P0=35$
+
+\subsubsection{Méthode de Splitting via MCMC}
+Pour estimer la probabilité que le prix devienne négatif pour des grandes valeurs de $P_0$ (ici, $P_0 = 35$), nous mettons également en oeuvre la méthode de splitting et chaînes de Markov avec rejet qui est adaptée à la modélisation simplifiée des prix par un processus de Poisson composé caractéristique ($\lambda,\nu$) (où $\nu$ est la loi de $J_n$).\\
+On a $N = (N_t)_{t>=0}$ processus de Poisson homogène de paramètre $\lambda$ et $(J_n)$ v.a. i.i.d. On a alors un processus de Poisson composé de paramètre $(\lambda,\nu)$ où $\nu$ est la loi de $J_1$.
+On procède donc comme pour l'exercice $3$ du $TP4$ : 
 \begin{itemize}
-	\item Chaque processus calcule entièrement l’image intégrale pour pouvoir calculer des caractéristiques en temps constant. \\
-	\item Chaque processus calcule, en fonction de son rang, certaines caractéristiques de l’image, de sorte que toutes les caractéristiques de l’image soient calculées par un unique processus. \\
-	\item Le processus racine reçoit ($MPI\_Recv$) de la part de tous les processus dans l’ordre de leur rang, un tableau des caractéristiques qu’ils ont calculées, et les agrège dans cet ordre dans un vecteur d’entier.\\
-	\item Ledit vecteur est retourné (on notera que quel que soit le processus racine, les caractéristiques retournées sont bien toujours dans le même ordre).\\
+\item on se donne des seuils $-1=p_K<...<p_1<p_0=P_0$.\\
+\item pour $k=1,...K$, on approche $\mathbb{P} (\inf_{t \leq T} P_t \leq p_k | \inf_{t \leq T} P_t \leq p_{k-1})$ par un estimateur $\widehat{\pi}_k$
+\item estimer $\mathbb{P} (\inf_{t \leq T} P_t < 0))$ par $\prod_1^K \widehat{\pi}_k$ .
 \end{itemize}
 
-\section{Création d'un classifieur}
-\subsection{Création des classifieurs faibles}
-Q3. Dans le but d’entraîner nos classifieurs faibles de manière parallèle, nous avons procédé de la façon suivante avec MPI (avec p processus) : \\
+On applique l'algorithme MCMC pour loi conditionnelle (construction de la chaîne de Markov de $M$ processus ponctuels par coloriage de paramètre $p$ - on garde chaque saut de prix avec une probabilité $p \in ]0,1[$ et on construit de manière indépendante un processus de Poisson composé de paramètres $(p\lambda,\nu)$ que l'on agrège à la première si et seulement si le résultat obtenu vérifie $(\inf_{t \leq T} P_t^m < 0))$) pour obtenur 
+\subsection{Calcul du quantile}
+
+\subsubsection{Simulation par un Monte-Carlo naïf}
+Dans cette partie on veut estimer des quantiles du prix final $p_{T}$ à différents niveaux. Une première approche consiste à utiliser l'estimateur des quantiles empiriques. Il s'agit donc de simuler différentes M processus de Poisson et de réordonner les prix finaux obtenus par ordre croissant : $p_{T}^{1}, p_{T}^{2}..., p_{T}^{M}$. Le quantile empirique au niveau $\alpha$ est alors : $p_{T}^{\left \lceil M\alpha  \right \rceil}$
+
+On obtient les résultats suivants pour différents paramètres:
+$i=1 ou 3, P0=35, alpha=10^-4, 5, 6$
+box plot + histogramme
+
+\subsubsection{Simulation par changement de loi}
+Dans cette partie, on veut estimer le quantile à des niveaux plus extrêmes ($10^{-5}$ ou $10^{-6}$) ce qui nécessite d'avoir recours à un changement de loi car la méthode naïve n'aboutit pas un résultat exploitable. L'idée est de nouveau utiliser la transformation d'Esscher, déterminer le paramètre $\theta$ qui minimise la variance puis effectuer le quantile en utilisant le résultat suivant du cours :
+Pour $X_{1},...,X_{n}$ simulés sous $\mathbb{Q}$ : 
+$Q(\alpha)=\inf_{x} \left \{ \frac{1}{n}\sum_{i=1}^{n} \frac{p(X_{i})}{q(X_{i})}1_{X_{i}\geq x}\geq \alpha \right \}$
+
+On implémente cela en triant les prix puis en leur affectant leur poids (correspondant à la normalisation calculée précédemment).
+
+On obtient les résultats suivants pour différents paramètres:
+$i=1 ou 3, P0=35, alpha=10^-4, 5, 6$
+
+box plot + histogramme
+
+
+\section{Superposition de processus}
+
+\subsection{Prix négatifs}
+
+\subsubsection{Simulation par un Monte-Carlo naïf}
+On procède de la même manière qu'à la section précédente en simulant M fois l'évolution du prix qui est la somme d'un processus de Poisson et d'un processus déterministe (mis à part sa première valeur) qui alterne entre saut positif et saut négatif. 
+
+On obtient les résultats suivants:
+Tableau: $P0; i=0 ou 3 ;M=10^6; Pest; Intervalle de conf$
+
+\subsubsection{Simulation par MCMC}
+
+\subsection{Calcul du quantile}
+
+\subsubsection{Simulation par un Monte-Carlo naïf}
+De la même qu'au calcul de quantile avec le processus précédent, on obtient les résultats suivants:
+
+\subsubsection{Simulation par MCMC}
+
+\section{Modélisation markovienne}
+
+\subsection{Quelques propriétés}
 
 \begin{itemize}
-	\item Nous récoltons tout d’abord les titres des images présentes dans la base d’apprentissage, et nous les stockons dans un vecteur de $string$ pour pouvoir tirer consécutivement $K$ images au sort. \\
-	\item  $w_1$ et $w_2$, vecteurs contenant les $w_{i1}$ et $w_{i2}$, sont initialisés.\\
-	\item  Pour $k$ variant de 1 à $K$, nous tirons une image au sort (la même pour chaque processus grâce à l’initialisation commune de la $seed$).\\
-	\item  Au bout de chaque série de $p$ passages dans la boucle, les $p$ processus ont appliqué une et une seule fois l’algorithme décrit dans la question précédente en tant que processus racine. Chaque processus dispose donc d’un vecteur complet de caractéristiques correspondant à une image distincte qui lui permet de calculer (suivant la logique décrite dans l’énoncé) la variation incrémentale de $w_1$ et $w_2$. On met alors à jour les valeurs de $w_1$ et $w_2$ pour tous les processus à l’aide d’un $MPI\_Allreduce$. Il faut noter que, contrairement à l'implémentation séquentielle pour laquelle les valeurs de $w_1$ et $w_2$ auraient été mises à jour à chaque boucle, ici nous ne procédons à cette mise à jour que tous les $p$ passages en agrégeant en une fois les $p$ modifications calculées en parallèles. \\
-	\item  Les valeurs stockées dans $w_1$ et $w_2$, obtenues à l’issue des $K$ tirages au sort, déterminent nos classifieurs $h_i$.\\
-		
-\end{itemize}
 
-Convergence des paramètres en fonction de $K$ et $\epsilon$ :\\
-Nous avons considéré l'évolution des quantités $  \frac{\Vert(w_1^{k+1} - w_1^{k})\Vert}{\Vert w_1^{k})\Vert}$ et $  \frac{\Vert(w_2^{k+1} - w_2^{k})\Vert}{\Vert w_2^{k})\Vert}$ où $\Vert . \Vert$ désigne la norme euclidienne et $w_i^k$ désigne le vecteur $w_i$ à la boucle $k$. On mesure ainsi l'évolution relative des paramètres au cours de leur $K$ $mod$ $p$ mises à jour. 
+\item Signe de $\alpha_{+}$ et $\alpha_{-}$
 
-\begin{itemize}
-	\item  Choix de $K$ : en traçant l'évolution de $  \frac{\Vert(w_2^{k+1} - w_2^{k})\Vert}{\Vert w_2^{k})\Vert}$ pour $K = 200$, $2000$ et $10000$, on constate que cette quantité converge pour différentes valeurs de $\epsilon$ et que le comportement de $  \frac{\Vert(w_1^{k+1} - w_1^{k})\Vert}{\Vert w_1^{k})\Vert}$ est non convergent pour ces trois valeurs de $K$. Il semble donc judicieux de prendre $K$ de l'ordre de $2000$. \\
+Dans le cadre de cette modélisation on considère que $\hat{J}_{n}$ est une chaîne de Markov de matrice de transition :
+$\hat{Q} = \begin{pmatrix}
+\frac{1+\alpha_{+}}{2} & \frac{1-\alpha_{+}}{2} \\ 
+ \frac{1-\alpha_{-}}{2}  & \frac{1+\alpha_{-}}{2} 
+\end{pmatrix}$
+Cela s'interprete en termes probabilistes par :
+$\mathbb{P}(\hat{J}_{n+1}=1\mid \hat{J}_{n}=1)=\frac{1+\alpha_{+}}{2}$ et on veut que cette probabilité soit inférieure à $\frac{1}{2}$ pour modéliser le retour à la moyenne. On a donc : $\alpha_{+}<0$. Par le même argument: $\alpha_{-}<0$
+A partir de maintenant (et sauf mention contraire) $\alpha_{+}=\alpha_{-}=\alpha$.
 
-\includegraphics[width=15cm]{"Fig1 Cv K=200"}\\
-\includegraphics[width=15cm]{"Fig2 Cv K=2000"}\\
-\includegraphics[width=15cm]{"Fig3 Cv K=10000"}\\
-	
-	\item Choix de $\epsilon$ : En raisonnant sur les ordres de grandeurs des paramètres (et notamment de $X_{ki} \sim 10000$) nous avons distingué deux régimes distincts :\\
-	
-	\begin{itemize}
-		\item Pour $\epsilon \gg \frac{1}{10000}$ : $w_{i2}$ est de l'ordre de $\epsilon$ et $w_{i1}$ est de l'ordre de $\epsilon \times X_i \sim 10000 \times \epsilon$. Ainsi, $w_{2i}$ ne joue globalement pas de rôle dans la classification qui est déterminée uniquement par le signe de $w_{i1} \gg w_{i2}$. De ce fait, la valeur particulière de $\epsilon$ dans ce régime a très peu d'impact sur le résultat. Etant donnée la variation des valeurs des $X_{ki}$ et de la catégorie de l'image tirée au sort à chaque boucle, la quantité $  \frac{\Vert(w_1^{k+1} - w_1^{k})\Vert}{\Vert w_1^{k})\Vert}$ reste de l'ordre de l'unité quel que soit $K$, et on n'observe pas de convergence.\\
-		
-		\item Pour $\epsilon \ll \frac{1}{10000}$ : $w_{i2}$ reste de l'ordre de $\epsilon$ et $w_{i1}$ est de l'ordre de l'unité (son initialisation). Là encore, $w_{2i}$ ne joue globalement pas de rôle dans la classification qui est déterminée uniquement par le signe de $w_{i1} \gg w_{i2}$ (car $1 \gg \epsilon$). De ce fait, la valeur particulière de $\epsilon$ dans ce régime a très peu d'impact sur le résultat (le classifieur est déterminé par la valeur de $w_{i1}$ qui varie très faiblement autour de sa valeur initiale, indépendante de $\epsilon$ - ce qui tend d'ailleurs à rendre l'entraînement superflu). On observe donc une relative stabilité de $w_1$ dans ce régime ($  \frac{\Vert(w_1^{k+1} - w_1^{k})\Vert}{\Vert w_1^{k})\Vert} \ll 1$). \\
-	\end{itemize}
-\includegraphics[width=15cm]{"Fig4 Cv w1 2 regimes"}\\
+\item $\mathbb{P} (\hat{J}_{n}\hat{J}_{n+1}=1) \simeq \frac{1+\alpha }{2}$
 
+On considère dans la suite que $\alpha = -0.875$ (donné par l'article de référence). On simule simplement la suite des signes $hat{J}_{n}$  en respectant la loi de transition donnée par la matrice. En utilisant la loi des grands nombres, on obtient bien:
+$\mathbb{P} (\hat{J}_{n}\hat{J}_{n+1}=1) \simeq 0.0625 \simeq \frac{1+\alpha }{2}$
 
 \end{itemize}
 
-Nous essayons donc dans la suite de nous placer à la frontière entre ces deux régimes.\\
+\subsection{Prix négatifs}
 
-\subsection{Boosting des classifieurs faibles}
 
-Q4. Dans cette partie, nous cherchons une combinaison linéaire des classifieurs faibles entraînés dans la première partie.\\
-Pour cela nous itérons à chaque étape sur toutes les images et tous nos classifieurs afin de déterminer le classifieur avec la plus faible erreur pondérée. Nous avons, à ce titre, utilisé $MPI\_MINLOC$ pour déterminer l’indice du meilleur classifieur. A chaque étape, nous avons ensuite mis à jour les poids des images pour rendre moins efficace notre classifieur (on a baissé le poids des images qu'il classait déjà correctement) afin de sélectionner d’autres classifieurs par la suite.\\
-L’idée est de finalement obtenir une combinaison de classifieurs qui sont efficaces sur l’ensemble des images.\\
+\subsubsection{Simulation par un Monte-Carlo naïf}
+On va simuler la suite des prix et utiliser la loi des grands nombres pour estimer la probabilité que le prix devienne négatif. On obtient les résultats suivants:
 
-Pour mettre en oeuvre cette méthode, nous avons utilisé la fonction $\frac{1}{2}\log(\frac{1-x}{x})$ qui nous permet d'obtenir une nouvelle pondération en fonction de l’erreur pondérée du meilleur classifieur.\\
 
-\begin{center}
-\includegraphics[width=10cm]{"Fig5 alpha"}\\
-\end{center}
+\subsubsection{Simulation par changement de loi}
 
-Nous voyons que cette fonction change de signe autour d’une erreur de 0.5 et cela a conduit à la limitation du nombre de classifieurs faibles sélectionnés par notre algorithme. En effet, un classifieur avec une erreur un peu plus faible que cette valeur était sélectionné puis, à cause de la modification des poids, il devenait moins efficace et passait à une erreur supérieure à 0.5 et donc, lorsqu’il était repris, on améliorait cette fois ses performances, le faisant à nouveau passer sous la barre de 0.5 d’erreur pondérée. Cette apparition de cycle nous a empêché d’obtenir une combianaison riche de classifieurs puisqu’en général nous avons obtenu moins d’une dizaine de classifieurs, indépendamment de la valeur de N.\\
 
-\section{Test du classifieur final}
+\subsection{Calcul du quantile}
 
-Q5. Notre classifieur final était très peu sensible à $\theta$. Les paramètres $K=2000$, $epsilon = 0.1$, $n = 200$, $N = 20$, $theta = 0$ et une normalisation de $0.001$ nous ont néanmoins permis d’obtenir un $F-score$ de $0.444$ sur toutes les images du dossier test.\\
+\subsubsection{Simulation par un Monte-Carlo naïf}
+On utilise la simulation obtenue précédemment pour déterminer le quantile grâce au quantile empirique.
 
-Nous avons cependant été limités dans l’apprentissage par le nombre d’images disponibles, et notamment le fait qu’elles soient identiques dans les 3 doissiers (app, test et dev). Nous aurions peut-être dû passer à des caractéristiques rectangulaires pour obtenir davantage d’informations. Enfin, nous pourrions envisager de diviser la valeur de chaque caractéristique par sa taille afin de normaliser toutes les valeurs et de pouvoir ainsi les comparer entre elles et qu’elles soient toutes de l’ordre de l’unité.
+\subsubsection{Simulation par changement de loi}
+
+\section{Limite macroscopique}
+
+
 
 
 \end{document}

@@ -42,7 +42,7 @@ def fusion(t1,j1,t2,j2):
 def oscillator(j0,n):
     return np.array([j0*(-1)**i for i in np.arange(n)])
     
-def Q2_MCMC_Seuil(P0=35, n=int(1e3), ratio=0.1, p=0.7, i=0, T=4*3600, la1=1/660, la2=1/110, N=[1,3], P=[[1/2],[1/4,1/6,1/12]]):
+def Q2_MCMC_Seuil(P0=35, n=int(1e3), ratio=0.1, p=0.7, i=0, T=4*3600, la1=1/660, la2=1/110, N=[1,3], P=[[1/2],[1/4,1/6,1/12]]): 
     m = N[i]
     val = np.delete(np.arange(-m,m+1),m)
     prob = np.concatenate([P[i][::-1],P[i]])
@@ -70,12 +70,9 @@ def Q2_MCMC_Seuil(P0=35, n=int(1e3), ratio=0.1, p=0.7, i=0, T=4*3600, la1=1/660,
     # Calcul des Prix min pour les n chaînes
     minP=np.array([min(P0+np.concatenate([np.arange(1),np.cumsum(fusion(TimeJump1[i], JumpSize1[interval1[i]:interval1[i+1]], TimeJump2[i], JumpSize2[i])[1])])) for i in np.arange(n)])
     
-    #previousSeuil (on veut que les seuils soient strictement décroissants)
-    previousSeuil = P0
     # Premier seuil a1
     a = [np.sort(minP)[int(ratio*n)]]
-    if(a[-1] == previousSeuil):
-        a[-1] -= 1
+    
     # Valeur initiale de la chaîne
     argmin = np.argwhere(minP<=a[-1])                             # indice des chaînes potentielles
     index = npr.choice(argmin.reshape(argmin.size))               # choix au hasard d'un indice
@@ -124,16 +121,13 @@ def Q2_MCMC_Seuil(P0=35, n=int(1e3), ratio=0.1, p=0.7, i=0, T=4*3600, la1=1/660,
             if NewPrice<=a[-1]:    # on accepte
                 NewPathPoisson.extend([np.sort(TimeJump2[interval2[n_chain]:interval2[n_chain+1]]), JumpSize2[n_chain]])   
                 PathPoisson = NewPathPoisson # mise à jour de la chaine
-            
+        
+        print(min(minP))
         previousSeuil = a[-1]
         a.append(np.sort(minP)[int(ratio*n)])
-        if(a[-1] == previousSeuil and min(minP) < a[-1]):
-            a[-1] -= 1
-        else :
-            del a[-1]
-            n = int(1.5*n) #on doit faire plus de simulations pour obtenir un nouveau seuilpreviousSeuil = a[-1]
+
         
-        print(a[-1])
+        print("a : " + str(a[-1]))
         # Valeur initiale de la chaîne
         argmin=np.argwhere(minP<=a[-1])                                         # indice des chaînes potentielles
         index=npr.choice(argmin.reshape(argmin.size))                           # choix au hasard d'un indice
@@ -283,19 +277,19 @@ def Q2_MCMC_Body(BoundSplit, P0=35, M=int(8e4), display=True, p=0.7, i=0, T=4*36
     
     if(display):
         plt.figure(1)
-    plt.title("Consistance des estimateurs a chaque niveau pour p = "+ str(p) +" et lambda = " + str(la1))
-    plt.legend(loc="best")
-    plt.ylabel("Probabilite conditionnelle au niveau k")
-    plt.grid()
-    
-    
-    plt.figure(2)
-    plt.title("Evolution du taux d'acceptation pour p = "+ str(p) +" et lambda = " + str(la1))
-    plt.ylabel("Taux d'acceptation")
-    plt.legend(loc="best")
-    plt.grid()
-    
-    plt.show()
+        plt.title("Consistance des estimateurs a chaque niveau pour p = "+ str(p) +" et lambda = " + str(la1))
+        plt.legend(loc="best")
+        plt.ylabel("Probabilite conditionnelle au niveau k")
+        plt.grid()
+        
+        
+        plt.figure(2)
+        plt.title("Evolution du taux d'acceptation pour p = "+ str(p) +" et lambda = " + str(la1))
+        plt.ylabel("Taux d'acceptation")
+        plt.legend(loc="best")
+        plt.grid()
+        
+        plt.show()
     
     # Calcul de l'estimateur 
     print("\n La proba de ruine estimée en partant de {} est {}\n".format(P0,ProbaEnd))
@@ -303,7 +297,7 @@ def Q2_MCMC_Body(BoundSplit, P0=35, M=int(8e4), display=True, p=0.7, i=0, T=4*36
     return ProbaEnd
     
     
-def Q2_MCMCIC(BoundSplit, P0=35, pVecteur=[0.7], NbrAlgo=25, M=int(5e4), display=True, p=0.7, i=0, T=4*3600, la1=1/660, la2=1/110, N=[1,3], P=[[1/2],[1/4,1/6,1/12]]):
+def Q2_MCMCIC(P0=35, pVecteur=[0.7], NbrAlgo=25, M=int(5e4), ratio=0.1, display=True, p=0.7, i=0, T=4*3600, la1=1/660, la2=1/110, N=[1,3], P=[[1/2],[1/4,1/6,1/12]]):
     plt.close()
     
     val=np.delete(np.arange(-N[i],N[i]+1),N[i])
@@ -311,8 +305,6 @@ def Q2_MCMCIC(BoundSplit, P0=35, pVecteur=[0.7], NbrAlgo=25, M=int(5e4), display
     
     length_p = len(pVecteur)
     LengthTrajVecteur=[M for i in range(length_p)]
-
-    K = len(BoundSplit)
     
     TempsDepart = time.time()
 
@@ -321,6 +313,7 @@ def Q2_MCMCIC(BoundSplit, P0=35, pVecteur=[0.7], NbrAlgo=25, M=int(5e4), display
     for n_p in np.arange(length_p):
         p = pVecteur[n_p]
         LengthTraj = LengthTrajVecteur[n_p]
+        BoundSplit = Q2_MCMC_Seuil(P0, int(1e3),ratio,p, i, T, la1, la2, N, P)
         print("Lorsque p = "+ str(p) +" et lambda1 = " + str(la1) + ", lambda2 = "+str(la2))   
         plt.clf()
         
@@ -339,11 +332,10 @@ def Q2_MCMCIC(BoundSplit, P0=35, pVecteur=[0.7], NbrAlgo=25, M=int(5e4), display
         plt.clf()
         
         plt.figure(1)
-        plt.title("Boxplot de " + str(NbrAlgo) +" estimateurs  pour lambda= " +str(la) + " et M= "+str(LengthTrajVecteur[0]))
+        plt.title("Boxplot de " + str(NbrAlgo) +" estimateurs  pour lambda1= " +str(la1) + " et lambda2 = " +str(la2) +" et M= "+str(LengthTrajVecteur[0]))
         plt.boxplot(np.transpose(StockProbaEnd), positions= [2*i+1 for i in np.arange(length_p)], labels = [str(x) for x in pVecteur])
         plt.xlabel("valeur de p")
         plt.ylabel("Valeur de l'estimateur")
-        plt.savefig("Boxplot.lambda"+ str(la)+".M"+str(LengthTrajVecteur[0])+".pdf")
         
         plt.figure(2)
         M = np.mean(StockProbaEnd, axis=1)
@@ -351,10 +343,8 @@ def Q2_MCMCIC(BoundSplit, P0=35, pVecteur=[0.7], NbrAlgo=25, M=int(5e4), display
         plt.plot(pVecteur, S/M, 'd-')
         plt.xlabel("valeur de p")
         plt.ylabel("ratio ecart type/moyenne")
-        plt.title("lambda= " +str(la)+ " et M= "+str(LengthTrajVecteur[0]))
-        plt.grid()
-        plt.savefig("Ratios.lambda"+ str(la)+".M"+str(LengthTrajVecteur[0])+".pdf")
-        
+        plt.title("lambda1= " +str(la1)+ ", lambda2= " + str(la2) + " et M= "+str(LengthTrajVecteur[0]))
+        plt.grid()        
         
         plt.show()
     

@@ -1,6 +1,6 @@
 import numpy as np
 import numpy.random as npr
-import  matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import time
 ###############################################################################
 ## Q2. Splitting + MCMC pour un seul run de l'algo et une seule valeur de p

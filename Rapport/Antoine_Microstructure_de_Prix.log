@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.12.31)  1 JUN 2018 17:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.12.31)  5 JUN 2018 19:38
 entering extended mode
 **./Antoine_Microstructure_de_Prix.tex
 (Antoine_Microstructure_de_Prix.tex
@@ -790,7 +790,7 @@ File: ttlps.def 2016/03/15
 (C:\Users\antoine\AppData\Roaming\MiKTeX\2.9\tex\latex\titlesec\block.tss
 File: block.tss 2016/03/15
 )
-No file Antoine_Microstructure_de_Prix.aux.
+(Antoine_Microstructure_de_Prix.aux)
 \openout1 = `Antoine_Microstructure_de_Prix.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
@@ -807,6 +807,7 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 18.
 LaTeX Font Info:    ... okay on input line 18.
 LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 18.
 LaTeX Font Info:    Try loading font information for TS1+cmr on input line 18.
+
 ("C:\Program Files\MiKTeX 2.9\tex\latex\base\ts1cmr.fd"
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
@@ -1001,56 +1002,46 @@ File: polytechnique-filetcourtbleuclair.pdf Graphic file (type pdf)
 
 <use polytechnique-filetcourtbleuclair.pdf>
 Package pdftex.def Info: polytechnique-filetcourtbleuclair.pdf used on input li
-ne 21.
+ne 22.
 (pdftex.def)             Requested size: 28.40483pt x 2.16676pt.
-File: polytechnique-filetcourtbleuclair.pdf Graphic file (type pdf)
+LaTeX Font Info:    Try loading font information for TS1+lmr on input line 24.
 
-<use polytechnique-filetcourtbleuclair.pdf>
-Package pdftex.def Info: polytechnique-filetcourtbleuclair.pdf used on input li
-ne 25.
-(pdftex.def)             Requested size: 28.40483pt x 2.16676pt.
+("C:\Program Files\MiKTeX 2.9\tex\latex\lm\ts1lmr.fd"
+File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 27.
+(Font)              <10.95> on input line 26.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 27.
+(Font)              <8> on input line 26.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 27.
+(Font)              <6> on input line 26.
 
-Underfull \hbox (badness 10000) in paragraph at lines 36--37
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 39--40
+Underfull \hbox (badness 10000) in paragraph at lines 26--28
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 40--41
+Overfull \hbox (1.68132pt too wide) in paragraph at lines 29--31
+[]\T1/lmr/m/n/10.95 Pour ob-te-nir un in-ter-valle de confiance, on uti-lise le
+ ré-sul-tat qui af-firme que : $[]\OT1/lmr/m/n/10.95 ([] [] 1[] \OMS/lmsy/m/n/1
+0.95  
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 29--31
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 41--42
+Underfull \hbox (badness 10000) in paragraph at lines 65--66
 
  []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 42--43
-
- []
-
-File: polytechnique-filetlongrouge.pdf Graphic file (type pdf)
-<use polytechnique-filetlongrouge.pdf>
-Package pdftex.def Info: polytechnique-filetlongrouge.pdf used on input line 45
-.
-(pdftex.def)             Requested size: 124.21074pt x 2.16628pt.
 
 <polytechnique-logohori.pdf, id=70, 195.52248pt x 85.3575pt>
 File: polytechnique-logohori.pdf Graphic file (type pdf)
 
 <use polytechnique-logohori.pdf>
-Package pdftex.def Info: polytechnique-logohori.pdf used on input line 46.
+Package pdftex.def Info: polytechnique-logohori.pdf used on input line 68.
 (pdftex.def)             Requested size: 97.76396pt x 42.67912pt.
  [2
 
@@ -1063,223 +1054,100 @@ File: polytechnique-filetcourtbleuclair.pdf Graphic file (type pdf)
 
 <use polytechnique-filetcourtbleuclair.pdf>
 Package pdftex.def Info: polytechnique-filetcourtbleuclair.pdf used on input li
-ne 46.
+ne 69.
 (pdftex.def)             Requested size: 28.40483pt x 2.16676pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 47--48
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 50--51
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 51--52
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 52--53
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 53--54
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 54--55
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 62--63
-
- []
-
-
-! LaTeX Error: File `"Fig1 Cv K=200"' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.64 \includegraphics[width=15cm]{"Fig1 Cv K=200"}
-                                                  \\
-I could not locate the file with any of these extensions:
-.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `"Fig2 Cv K=2000"' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.65 ...ludegraphics[width=15cm]{"Fig2 Cv K=2000"}
-                                                  \\
-I could not locate the file with any of these extensions:
-.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `"Fig3 Cv K=10000"' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.66 ...udegraphics[width=15cm]{"Fig3 Cv K=10000"}
-                                                  \\
-I could not locate the file with any of these extensions:
-.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 64--67
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 64--67
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 64--67
-
- []
-
-File: polytechnique-logohori.pdf Graphic file (type pdf)
-<use polytechnique-logohori.pdf>
-Package pdftex.def Info: polytechnique-logohori.pdf used on input line 68.
-(pdftex.def)             Requested size: 97.76396pt x 42.67912pt.
- [3]
-Underfull \hbox (badness 10000) in paragraph at lines 68--69
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 71--72
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 73--74
-
- []
-
-
-! LaTeX Error: File `"Fig4 Cv w1 2 regimes"' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.75 ...aphics[width=15cm]{"Fig4 Cv w1 2 regimes"}
-                                                  \\
-I could not locate the file with any of these extensions:
-.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 75--76
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 80--81
-
- []
-
-File: polytechnique-filetcourtbleuclair.pdf Graphic file (type pdf)
-<use polytechnique-filetcourtbleuclair.pdf>
-Package pdftex.def Info: polytechnique-filetcourtbleuclair.pdf used on input li
-ne 82.
-(pdftex.def)             Requested size: 28.40483pt x 2.16676pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 84--87
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 88--89
-
- []
-
-
-! LaTeX Error: File `"Fig5 alpha"' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.91 \includegraphics[width=10cm]{"Fig5 alpha"}
-                                               \\
-I could not locate the file with any of these extensions:
-.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 94--95
-
- []
-
-File: polytechnique-logohori.pdf Graphic file (type pdf)
-<use polytechnique-logohori.pdf>
-Package pdftex.def Info: polytechnique-logohori.pdf used on input line 95.
-(pdftex.def)             Requested size: 97.76396pt x 42.67912pt.
- [4]
 File: polytechnique-filetlongrouge.pdf Graphic file (type pdf)
- <use polytechnique-filetlongrouge.pdf>
-Package pdftex.def Info: polytechnique-filetlongrouge.pdf used on input line 96
+
+<use polytechnique-filetlongrouge.pdf>
+Package pdftex.def Info: polytechnique-filetlongrouge.pdf used on input line 91
 .
 (pdftex.def)             Requested size: 124.21074pt x 2.16628pt.
+File: polytechnique-filetcourtbleuclair.pdf Graphic file (type pdf)
 
-Underfull \hbox (badness 10000) in paragraph at lines 98--99
+<use polytechnique-filetcourtbleuclair.pdf>
+Package pdftex.def Info: polytechnique-filetcourtbleuclair.pdf used on input li
+ne 93.
+(pdftex.def)             Requested size: 28.40483pt x 2.16676pt.
+File: polytechnique-filetcourtbleuclair.pdf Graphic file (type pdf)
 
- []
-
+<use polytechnique-filetcourtbleuclair.pdf>
+Package pdftex.def Info: polytechnique-filetcourtbleuclair.pdf used on input li
+ne 103.
+(pdftex.def)             Requested size: 28.40483pt x 2.16676pt.
 File: polytechnique-logohori.pdf Graphic file (type pdf)
-<use polytechnique-logohori.pdf>
-Package pdftex.def Info: polytechnique-logohori.pdf used on input line 103.
+ <use polytechnique-logohori.pdf>
+Package pdftex.def Info: polytechnique-logohori.pdf used on input line 108.
+(pdftex.def)             Requested size: 97.76396pt x 42.67912pt.
+
+[3]
+File: polytechnique-filetlongrouge.pdf Graphic file (type pdf)
+ <use polytechnique-filetlongrouge.pdf>
+Package pdftex.def Info: polytechnique-filetlongrouge.pdf used on input line 11
+0.
+(pdftex.def)             Requested size: 124.21074pt x 2.16628pt.
+File: polytechnique-filetcourtbleuclair.pdf Graphic file (type pdf)
+
+<use polytechnique-filetcourtbleuclair.pdf>
+Package pdftex.def Info: polytechnique-filetcourtbleuclair.pdf used on input li
+ne 112.
+(pdftex.def)             Requested size: 28.40483pt x 2.16676pt.
+File: polytechnique-filetcourtbleuclair.pdf Graphic file (type pdf)
+
+<use polytechnique-filetcourtbleuclair.pdf>
+Package pdftex.def Info: polytechnique-filetcourtbleuclair.pdf used on input li
+ne 134.
+(pdftex.def)             Requested size: 28.40483pt x 2.16676pt.
+File: polytechnique-filetcourtbleuclair.pdf Graphic file (type pdf)
+
+<use polytechnique-filetcourtbleuclair.pdf>
+Package pdftex.def Info: polytechnique-filetcourtbleuclair.pdf used on input li
+ne 144.
+(pdftex.def)             Requested size: 28.40483pt x 2.16676pt.
+File: polytechnique-filetlongrouge.pdf Graphic file (type pdf)
+
+<use polytechnique-filetlongrouge.pdf>
+Package pdftex.def Info: polytechnique-filetlongrouge.pdf used on input line 15
+1.
+(pdftex.def)             Requested size: 124.21074pt x 2.16628pt.
+File: polytechnique-logohori.pdf Graphic file (type pdf)
+ <use polytechnique-logohori.pdf>
+Package pdftex.def Info: polytechnique-logohori.pdf used on input line 156.
+(pdftex.def)             Requested size: 97.76396pt x 42.67912pt.
+
+[4]
+File: polytechnique-logohori.pdf Graphic file (type pdf)
+ <use polytechnique-logohori.pdf>
+Package pdftex.def Info: polytechnique-logohori.pdf used on input line 156.
 (pdftex.def)             Requested size: 97.76396pt x 42.67912pt.
  [5] (Antoine_Microstructure_de_Prix.aux) ) 
 Here is how much of TeX's memory you used:
- 6045 strings out of 493323
- 81885 string characters out of 3139059
+ 6065 strings out of 493323
+ 82758 string characters out of 3139059
  152666 words of memory out of 3000000
- 9393 multiletter control sequences out of 15000+200000
- 71692 words of font info for 73 fonts, out of 3000000 for 9000
+ 9428 multiletter control sequences out of 15000+200000
+ 71877 words of font info for 74 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 39i,10n,46p,909b,465s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 39i,9n,36p,584b,457s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/e
-nc/dvips/lm/lm-rm.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathit
-.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Program 
+nc/dvips/lm/lm-rm.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathsy
+.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Program 
 Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathex.enc}{C:/Program Files/MiKTeX 2.9/
-fonts/enc/dvips/lm/lm-ec.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm
-/lmcsc10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmex10.pfb><C:/
-Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmmi10.pfb><C:/Program Files/MiK
-TeX 2.9/fonts/type1/public/lm/lmmi6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type
-1/public/lm/lmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr10.
-pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr12.pfb><C:/Program Fi
-les/MiKTeX 2.9/fonts/type1/public/lm/lmr6.pfb><C:/Program Files/MiKTeX 2.9/font
-s/type1/public/lm/lmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/l
-mss12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmssbx10.pfb><C:/P
-rogram Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb><C:/Program Files/MiKT
-eX 2.9/fonts/type1/public/lm/lmsy8.pfb>
-Output written on Antoine_Microstructure_de_Prix.pdf (5 pages, 1740809 bytes).
+fonts/enc/dvips/lm/lm-ec.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm
+-ts1.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmcsc10.pfb><C:/Pro
+gram Files/MiKTeX 2.9/fonts/type1/public/lm/lmex10.pfb><C:/Program Files/MiKTeX
+ 2.9/fonts/type1/public/lm/lmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/
+public/lm/lmmi6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmmi8.pf
+b><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr10.pfb><C:/Program File
+s/MiKTeX 2.9/fonts/type1/public/lm/lmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts
+/type1/public/lm/lmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lm
+r8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmss12.pfb><C:/Progra
+m Files/MiKTeX 2.9/fonts/type1/public/lm/lmssbx10.pfb><C:/Program Files/MiKTeX 
+2.9/fonts/type1/public/lm/lmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
+ublic/lm/lmsy6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy8.pfb
+><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on Antoine_Microstructure_de_Prix.pdf (5 pages, 1746549 bytes).
 PDF statistics:
- 203 PDF objects out of 1000 (max. 8388607)
+ 214 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  31 words of extra memory for PDF output out of 10000 (max. 10000000)
 
