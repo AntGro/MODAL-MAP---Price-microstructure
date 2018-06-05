@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.6.1)  5 JUN 2018 15:59
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.6.1)  5 JUN 2018 15:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**Yassin_Microstructure_de_Prix.tex
-(./Yassin_Microstructure_de_Prix.tex
+**test.tex
+(./test.tex
 LaTeX2e <2018-04-01> patch level 2
 Babel <3.18> and hyphenation patterns for 84 language(s) loaded.
 (/usr/local/texlive/2018/texmf-dist/tex/latex/base/article.cls
@@ -475,9 +475,8 @@ File: ttlps.def 2016/03/15
 )
 (/usr/local/texlive/2018/texmf-dist/tex/latex/titlesec/block.tss
 File: block.tss 2016/03/15
-)
-(./Yassin_Microstructure_de_Prix.aux)
-\openout1 = `Yassin_Microstructure_de_Prix.aux'.
+) (./test.aux)
+\openout1 = `test.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
 LaTeX Font Info:    ... okay on input line 18.
@@ -695,11 +694,11 @@ LaTeX Font Info:    Try loading font information for TS1+lmr on input line 24.
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 26.
+(Font)              <10.95> on input line 27.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 26.
+(Font)              <8> on input line 27.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 26.
+(Font)              <6> on input line 27.
 
 Underfull \hbox (badness 10000) in paragraph at lines 26--28
 
@@ -717,99 +716,46 @@ Underfull \hbox (badness 10000) in paragraph at lines 29--31
 
  []
 
-File: polytechnique-filetcourt.pdf Graphic file (type pdf)
-<use polytechnique-filetcourt.pdf>
-Package pdftex.def Info: polytechnique-filetcourt.pdf  used on input line 62.
-(pdftex.def)             Requested size: 28.40604pt x 2.16808pt.
 <polytechnique-logohori.pdf, id=19, 133.81996pt x 58.42828pt>
 File: polytechnique-logohori.pdf Graphic file (type pdf)
 <use polytechnique-logohori.pdf>
-Package pdftex.def Info: polytechnique-logohori.pdf  used on input line 70.
+Package pdftex.def Info: polytechnique-logohori.pdf  used on input line 55.
 (pdftex.def)             Requested size: 97.75308pt x 42.6808pt.
 [2
 
  </usr/local/texlive/2018/texmf-dist/tex/latex/polytechnique/polytechnique-logo
 hori.pdf> </usr/local/texlive/2018/texmf-dist/tex/latex/polytechnique/polytechn
-ique-filetlongrouge.pdf>]
-LaTeX Info: Redefining \\ on input line 84.
-File: polytechnique-filetlongrouge.pdf Graphic file (type pdf)
-<use polytechnique-filetlongrouge.pdf>
-Package pdftex.def Info: polytechnique-filetlongrouge.pdf  used on input line 8
-4.
-(pdftex.def)             Requested size: 124.21375pt x 2.16808pt.
-File: polytechnique-filetcourt.pdf Graphic file (type pdf)
-<use polytechnique-filetcourt.pdf>
-Package pdftex.def Info: polytechnique-filetcourt.pdf  used on input line 86.
-(pdftex.def)             Requested size: 28.40604pt x 2.16808pt.
-File: polytechnique-filetcourt.pdf Graphic file (type pdf)
-<use polytechnique-filetcourt.pdf>
-Package pdftex.def Info: polytechnique-filetcourt.pdf  used on input line 96.
-(pdftex.def)             Requested size: 28.40604pt x 2.16808pt.
-LaTeX Info: Redefining \\ on input line 103.
-File: polytechnique-filetlongrouge.pdf Graphic file (type pdf)
-<use polytechnique-filetlongrouge.pdf>
-Package pdftex.def Info: polytechnique-filetlongrouge.pdf  used on input line 1
-03.
-(pdftex.def)             Requested size: 124.21375pt x 2.16808pt.
-File: polytechnique-filetcourt.pdf Graphic file (type pdf)
-<use polytechnique-filetcourt.pdf>
-Package pdftex.def Info: polytechnique-filetcourt.pdf  used on input line 105.
-(pdftex.def)             Requested size: 28.40604pt x 2.16808pt.
-File: polytechnique-logohori.pdf Graphic file (type pdf)
-<use polytechnique-logohori.pdf>
-Package pdftex.def Info: polytechnique-logohori.pdf  used on input line 111.
-(pdftex.def)             Requested size: 97.75308pt x 42.6808pt.
- [3]
-File: polytechnique-filetcourt.pdf Graphic file (type pdf)
-<use polytechnique-filetcourt.pdf>
-Package pdftex.def Info: polytechnique-filetcourt.pdf  used on input line 127.
-(pdftex.def)             Requested size: 28.40604pt x 2.16808pt.
-File: polytechnique-filetcourt.pdf Graphic file (type pdf)
-<use polytechnique-filetcourt.pdf>
-Package pdftex.def Info: polytechnique-filetcourt.pdf  used on input line 137.
-(pdftex.def)             Requested size: 28.40604pt x 2.16808pt.
-LaTeX Info: Redefining \\ on input line 144.
-File: polytechnique-filetlongrouge.pdf Graphic file (type pdf)
-<use polytechnique-filetlongrouge.pdf>
-Package pdftex.def Info: polytechnique-filetlongrouge.pdf  used on input line 1
-44.
-(pdftex.def)             Requested size: 124.21375pt x 2.16808pt.
-File: polytechnique-logohori.pdf Graphic file (type pdf)
-<use polytechnique-logohori.pdf>
-Package pdftex.def Info: polytechnique-logohori.pdf  used on input line 149.
-(pdftex.def)             Requested size: 97.75308pt x 42.6808pt.
- [4] (./Yassin_Microstructure_de_Prix.aux) ) 
+ique-filetlongrouge.pdf>] (./test.aux) ) 
 Here is how much of TeX's memory you used:
  6223 strings out of 492649
- 86618 string characters out of 6129623
- 165560 words of memory out of 5000000
+ 86393 string characters out of 6129623
+ 163560 words of memory out of 5000000
  9938 multiletter control sequences out of 15000+600000
  71877 words of font info for 74 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,12n,39p,581b,518s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2018/texmf-dist
-/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2018/texmf-dist/fonts/enc/dvi
-ps/lm/lm-mathsy.enc}{/usr/local/texlive/2018/texmf-dist/fonts/enc/dvips/lm/lm-m
-athit.enc}{/usr/local/texlive/2018/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}
-{/usr/local/texlive/2018/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/te
-xlive/2018/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</usr/local/texlive/2018/te
-xmf-dist/fonts/type1/public/lm/lmcsc10.pfb></usr/local/texlive/2018/texmf-dist/
-fonts/type1/public/lm/lmex10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type
-1/public/lm/lmmi10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/l
-m/lmmi6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/lm/lmmi8.pfb
-></usr/local/texlive/2018/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/loca
-l/texlive/2018/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/local/texlive/2
-018/texmf-dist/fonts/type1/public/lm/lmr6.pfb></usr/local/texlive/2018/texmf-di
-st/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2018/texmf-dist/fonts/typ
-e1/public/lm/lmss12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/
-lm/lmssbx10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/lm/lmsy1
-0.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/lm/lmsy6.pfb></usr
-/local/texlive/2018/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texl
-ive/2018/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Yassin_Microstructure_de_Prix.pdf (4 pages, 698128 bytes).
+ 41i,11n,39p,556b,430s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2018/texmf-dist/fon
+ts/enc/dvips/lm/lm-mathsy.enc}{/usr/local/texlive/2018/texmf-dist/fonts/enc/dvi
+ps/lm/lm-mathit.enc}{/usr/local/texlive/2018/texmf-dist/fonts/enc/dvips/lm/lm-m
+athex.enc}{/usr/local/texlive/2018/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/us
+r/local/texlive/2018/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texliv
+e/2018/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</usr/local/texlive/2018/texmf-
+dist/fonts/type1/public/lm/lmcsc10.pfb></usr/local/texlive/2018/texmf-dist/font
+s/type1/public/lm/lmex10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/pu
+blic/lm/lmmi10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/lm/lm
+mi6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></u
+sr/local/texlive/2018/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/te
+xlive/2018/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/local/texlive/2018/
+texmf-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2018/texmf-dist/f
+onts/type1/public/lm/lmss12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1
+/public/lm/lmssbx10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/
+lm/lmsy10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/lm/lmsy6.p
+fb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/lo
+cal/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on test.pdf (2 pages, 678171 bytes).
 PDF statistics:
- 102 PDF objects out of 1000 (max. 8388607)
- 75 compressed objects within 1 object stream
+ 92 PDF objects out of 1000 (max. 8388607)
+ 68 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  26 words of extra memory for PDF output out of 10000 (max. 10000000)
 
