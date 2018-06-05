@@ -26,7 +26,7 @@ p = P[i]
 val = np.arange(1,m+1)
 prob = p
 
-n=int(5e1)
+n=int(5e3)
 
 # paramètre de la matrice de transition
 alpha = -0.875
@@ -57,36 +57,36 @@ def Ln(x, y, a=alpha, t=theta): # retourne le rapport de vraissemblance de P_a p
 
 
 ## Simu script
-TempsDepart = time.time()
-
-# Nombre de sauts sur [0,T], par points de la chaîne
-NbrJump = npr.poisson(T*la,n) 
-
-# Découpage des chaînes
-interval = np.cumsum(np.concatenate([np.arange(1), NbrJump]))
-
-# Taille des sauts pour toutes les chaînes 
-JumpSizeAbs = npr.choice(val,size=np.sum(NbrJump),p=prob)
-
-# Signe des sauts --- /!\ Sous theta /!\
-randTransition=npr.rand(np.sum(NbrJump))
-JumpSign = [generateSign(randTransition[interval[i]:interval[i+1]],theta) for i in np.arange(n)]
-
-# Calcul des Prix min multipliés par Ln pour chacune des n chaînes 
-minP=np.array([(min(P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[interval[i]:interval[i+1]]*JumpSign[i])]))< 0) * np.product(np.array([Ln(JumpSign[i][j],JumpSign[i][j+1]) for j in np.arange(len(JumpSign[i])-1)])) for i in np.arange(0,n)])
-
-#Affichage de l'estimateur de la proba pour ce niveau
-pEst=np.mean(minP)
-
-
-print("\nDurée d'exécution "+str(time.time()-TempsDepart))
-print ("La proba estimée est " + str(pEst))
-
-for i in range(5):
-    plt.step(np.arange(NbrJump[i]+1),P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[interval[i]:interval[i+1]]*JumpSign[i])]))
-   
-plt.plot([0,max(NbrJump[:5])+1],[0,0],"r")
-plt.show()
+# TempsDepart = time.time()
+# 
+# # Nombre de sauts sur [0,T], par points de la chaîne
+# NbrJump = npr.poisson(T*la,n) 
+# 
+# # Découpage des chaînes
+# interval = np.cumsum(np.concatenate([np.arange(1), NbrJump]))
+# 
+# # Taille des sauts pour toutes les chaînes 
+# JumpSizeAbs = npr.choice(val,size=np.sum(NbrJump),p=prob)
+# 
+# # Signe des sauts --- /!\ Sous theta /!\
+# randTransition=npr.rand(np.sum(NbrJump))
+# JumpSign = [generateSign(randTransition[interval[i]:interval[i+1]],theta) for i in np.arange(n)]
+# 
+# # Calcul des Prix min multipliés par Ln pour chacune des n chaînes 
+# minP=np.array([(min(P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[interval[i]:interval[i+1]]*JumpSign[i])]))< 0) * np.product(np.array([Ln(JumpSign[i][j],JumpSign[i][j+1]) for j in np.arange(len(JumpSign[i])-1)])) for i in np.arange(0,n)])
+# 
+# #Affichage de l'estimateur de la proba pour ce niveau
+# pEst=np.mean(minP)
+# 
+# 
+# print("\nDurée d'exécution "+str(time.time()-TempsDepart))
+# print ("La proba estimée est " + str(pEst))
+# 
+# for i in range(5):
+#     plt.step(np.arange(NbrJump[i]+1),P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[interval[i]:interval[i+1]]*JumpSign[i])]))
+#    
+# plt.plot([0,max(NbrJump[:5])+1],[0,0],"r")
+# plt.show()
 
 
 ## Simu version fonction
@@ -122,11 +122,10 @@ def simu(t):
 #     plt.show()
     return(pEst)
 
-theta1=np.linspace(-0.6,-0.875,50)
-y=[simu(th) for th in theta1]
-y2=np.std(np.array([simu(-0.6) for k in range(30)]))
-plt.plot(theta1,y)
-plt.show()
+plt.figure(1)
+theta1=np.linspace(-0.875,0.5,100)
+y1=[simu(th) for th in theta1]
+plt.plot(theta1,y1)
 
 sEst=np.std(minP)
 
@@ -187,10 +186,11 @@ def process(seuil,t):
 
     return res[indexSort[index]]
 
-# theta=np.linspace(-0.875,-0.6,15)
-# y=[process(0.01,th) for th in theta]
-# plt.plot(theta,y)
-# plt.show()
+plt.figure(2)
+theta2=np.linspace(-0.875,0.5,100)
+y2=[process(0.01,th) for th in theta2]
+plt.plot(theta2,y2)
+plt.show()
 
 
 
