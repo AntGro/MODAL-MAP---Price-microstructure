@@ -59,15 +59,73 @@ $theta=val opt, P0=35$
 
 \subsubsection{Méthode de Splitting via MCMC}
 Pour estimer la probabilité que le prix devienne négatif pour des grandes valeurs de $P_0$ (ici, $P_0 = 35$), nous mettons également en oeuvre la méthode de splitting et chaînes de Markov avec rejet qui est adaptée à la modélisation simplifiée des prix par un processus de Poisson composé caractéristique ($\lambda,\nu$) (où $\nu$ est la loi de $J_n$).\\
+
 On a $N = (N_t)_{t>=0}$ processus de Poisson homogène de paramètre $\lambda$ et $(J_n)$ v.a. i.i.d. On a alors un processus de Poisson composé de paramètre $(\lambda,\nu)$ où $\nu$ est la loi de $J_1$.
-On procède donc comme pour l'exercice $3$ du $TP4$ : 
+On procède donc comme pour l'exercice $3$ du $TP4$ :
+ 
 \begin{itemize}
 \item on se donne des seuils $-1=p_K<...<p_1<p_0=P_0$.\\
-\item pour $k=1,...K$, on approche $\mathbb{P} (\inf_{t \leq T} P_t \leq p_k | \inf_{t \leq T} P_t \leq p_{k-1})$ par un estimateur $\widehat{\pi}_k$
-\item estimer $\mathbb{P} (\inf_{t \leq T} P_t < 0))$ par $\prod_1^K \widehat{\pi}_k$ .
+\item pour $k=1,...K$, on approche $\mathbb{P} (\inf_{t \leq T} P_t \leq p_k | \inf_{t \leq T} P_t \leq p_{k-1})$ par un estimateur $\widehat{\pi}_k$\\
+\item estimer $\mathbb{P} (\inf_{t \leq T} P_t < 0))$ par $\prod_1^K \widehat{\pi}_k$.\\
 \end{itemize}
 
-On applique l'algorithme MCMC pour loi conditionnelle (construction de la chaîne de Markov de $M$ processus ponctuels par coloriage de paramètre $p$ - on garde chaque saut de prix avec une probabilité $p \in ]0,1[$ et on construit de manière indépendante un processus de Poisson composé de paramètres $(p\lambda,\nu)$ que l'on agrège à la première si et seulement si le résultat obtenu vérifie $(\inf_{t \leq T} P_t^m < 0))$) pour obtenur 
+On applique l'algorithme MCMC pour loi conditionnelle (construction de la chaîne de Markov de $M$ processus ponctuels par \textit{coloriage} de paramètre $p$ - on garde chaque saut de prix avec une probabilité $p \in ]0,1[$ et on construit de manière indépendante un processus de Poisson composé de paramètres $(p\lambda,\nu)$ que l'on agrège à la première si et seulement si le résultat obtenu vérifie $\inf_{t \leq T} P_t^m < 0$) pour obtenir (théorème ergodique) une estimation :
+
+\begin{equation*}
+\frac{1}{N} \sum_{m=1}^{M} \mathbf{1}_{\underset{t \leq T}{\inf} P_t^{(m)} \leq p_{k+1}} \underset{M \rightarrow +\infty}{\longrightarrow} \mathbb{P} (\inf_{t \leq T} P_t \leq p_k | \underset{t \leq T}{\inf} P_t \leq p_{k-1})
+\end{equation*}
+
+En se fixant un ratio $r$ (souvent de l'ordre de $0.1$) et un nombre $n$ (souvent de l'ordre de $1000$), on détermine les seuils $(p_k)$ :\\
+
+\begin{itemize}
+\item Initialisation : on fixe $p_0 = P_0$ puis on simule $n$ trajectoires de prix indépendantes. On choisit alors $p_1$ comme le plus petit entier $s$ tel que $\mathbb{P}(\underset{t \leq T}{\inf} P_t \leq s) \geq r$ que l'on approxime en prenant  le $\lfloor{nr}\rfloor^{\text{ième}}$ plus grand terme de l'ensemble des $(\underset{t \leq T}{\inf} P_t^{(m)})$ que l'on a calculé à partir des $(P_t^{m)})_{1 \leq m \leq n}$ simulés. On garde alors au hasard une des simulations qui vérifient $\underset{t \leq T}{\inf} P_t^{(m)} \leq p_1$\\
+
+\item Pour $k \geq 1$, tant que $p_k \geq 0$ étant donné une évolution de prix qui vérifie $\underset{t \leq T}{\inf} P_t^{(0)} \leq p_1$. A partir de ce processus, on génère une chaîne de $n$ processus selon l'algorithme MCMC pour loi conditionnelle décrit \textit{supra} et on prend $p_{k+1}$ le plus petit entier $s$ tel que $\mathbb{P}(\underset{t \leq T}{\inf} P_t \leq s | \underset{t \leq T}{\inf} P_t \leq p_k) \geq r$ que l'on approxime en prenant  le $\lfloor{nr}\rfloor^{\text{ième}}$ plus grand terme de l'ensemble des $(\underset{t \leq T}{\inf} P_t^{(m)})_{1 \leq m \leq n}$ obtenus à partir de nos simulations.
+
+\end{itemize}
+
+\begin{figure}
+\begin{center}
+\caption{Simulation de l'algorithme MCMC pour $P0=35$, $r=0.1$, $J_n$ à valeurs dans $\{-1,1\}$}
+\includegraphics[scale=0.5]{"Q1 MCMC"}
+\end{center}
+\end{figure}
+
+On observe que les probabilités conditionnelles associées aux premiers niveaux ont bien des valeurs légèrement supérieures au ratio ($r=0.1$) qui a servi à déterminer les seuils (ici $[24, 18.0, 13.0, 10.0, 7.0, 4.0, 0.0, -1]
+$).\\
+
+Il reste alors à déterminer le paramètre $p$ du \textit{coloriage}. Pour ce faire, on effectue plusieurs réalisations indépendantes de cet estimateur pour différentes valeurs de $p$. On trace pour chaque $p$ une boîte à moustache des valeurs de la probabilité de ruine estimée, ainsi que l'erreur relative (ratio de l'écart type et de la valeur moyenne) de ces réalisations indépendantes. On choisit alors à la main la valeur de $p$ en cherchant à minimiser l'erreur relative et la dispersion. Cette valeur servira à réaliser les estimations de la probabilité de la ruine du joueur.\\
+
+\begin{figure}
+\begin{center}
+\caption{Dispersion et erreur relative de l'estimateur en fonction de $p$, pour $P0=35$, $J_n$ à valeurs dans $\{-1,1\}$ (haut) et dans $\{-3,-2,-1,1,2,3\}$ (bas). }
+\includegraphics[scale=0.25]{"Q1 MCMC IC i0 boxplot"}
+\includegraphics[scale=0.4]{"Q1 MCMC IC i0 precision"}
+\includegraphics[scale=0.25]{"Q1 MCMC IC i1 boxplot"}
+\includegraphics[scale=0.4]{"Q1 MCMC IC i1 precision"}
+\end{center}
+\end{figure}
+
+Nous prendrons $p=0.7$ pour l'estimation de la probabilité de la ruine. Nous donnerons les résultats avec un intervalle de confiance asymptotique au niveau $0.95$ en effectuant plusieurs réalisations indépendantes (on applique le TCL ainsi que le théorème de Slutsky qui nous permet de remplacer la variance théorique de l'estimateur par sa variance empirique).
+
+\begin{figure}
+\begin{center}
+\caption{Estimation de la probabilité d'avoir des prix négatifs pour $P_0=35$, $p=0.7$, $N=60000$ (longueur de la chaîne de processus pour chaque niveau)} 
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+m (Distrib.) & $P_{0}$ & Seuils & Nb de réalisation & $P_{est}$ & Borne inf (IC) & Borne sup (IC) \\
+\hline
+1 & 35 & $[24, 17, 12, 9, 6, 3, 0, -1]$ & 50 & 3.5486e-07 & 3.5118e-07 & 3.5855e-07 \\
+\hline
+1 & 35 & $[24, 17, 12, 9, 6, 3, 0, -1]$ & 15 & 3.6177e-07 & 3.5347e-07 & 3.7007e-07 \\
+\hline
+3 & 35 & $[15,4, -1]$ & 15 & 0.004307 & 0.004286 & 0.004328 \\
+\hline
+\end{tabular}
+\end{center}
+\end{figure}
+
+
 \subsection{Calcul du quantile}
 
 \subsubsection{Simulation par un Monte-Carlo naïf}
@@ -100,7 +158,34 @@ On procède de la même manière qu'à la section précédente en simulant M foi
 On obtient les résultats suivants:
 Tableau: $P0; i=0 ou 3 ;M=10^6; Pest; Intervalle de conf$
 
-\subsubsection{Simulation par MCMC}
+\subsubsection{Méthode de Splitting via MCMC}
+On donne, comme à la question $1$, un estimateur de la probabilité d'avoir un prix négatif par une méthode de splitting via MCMC. Seulement contrairement à la première modélisation de la microstructure du prix, nous avons deux processus indépendants : $P_t^{(1)}$, processus de Poisson composé de paramètres $(\lambda,\nu)$ où $\nu$ est la loi de $J_n^{(1)}$, et $P_t^{(2)}$ qui n'est pas un processus de Poisson composé (les sauts n'étant pas indépendants). On peut néanmoins appliquer l'algorithme MCMC en appliquant une transformation réversible au couple $(P_t^{(1)},P_t^{(2)})$ en faisant subir un coloriage de paramètre $p$ à $P_t^{(1)}$ et en générant une nouveau processus $\widetilde{P_t^{(2)}}$ indépendant de $P_t^{(2)}$.\\
+
+On détermine donc les seuils et le paramètre $p$ du coloriage de la même manière que dans la partie précédente.\\
+
+\begin{figure}
+\begin{center}
+\caption{Simulation de l'algorithme MCMC pour $P0=35$, $r=0.1$, $J_n$ à valeurs dans $\{-1,1\}$}
+\includegraphics[scale=0.5]{"Q2 MCMC"}
+\end{center}
+\end{figure}
+
+Nous prendrons $p=0.7$ pour l'estimation de la probabilité d'avoir des prix négatifs. Nous donnerons là encore les résultats avec un intervalle de confiance asymptotique au niveau $0.95$ en effectuant plusieurs réalisations indépendantes (on applique le TCL ainsi que le théorème de Slutsky qui nous permet de remplacer la variance théorique de l'estimateur par sa variance empirique).
+
+\begin{figure}
+\begin{center}
+\caption{Estimation de la probabilité d'avoir des prix négatifs pour $P_0=35$, $p=0.7$, $N=60000$ (longueur de la chaîne de processus pour chaque niveau)} 
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+m (Distrib.) & $P_{0}$ & Nb de réalisation & $P_{est}$ & Borne inf (IC) & Borne sup (IC) \\
+\hline
+1 & 35 & 15 & 1.73e-e-12 & 1.62e-12 & 1.85e-07 \\
+\hline
+3 & 35 & 15 & 5.36e-5 & 5.26e-5 & 5.46e-5 \\
+\hline
+\end{tabular}
+\end{center}
+\end{figure}
 
 \subsection{Calcul du quantile}
 
@@ -152,6 +237,16 @@ On utilise la simulation obtenue précédemment pour déterminer le quantile gr�
 
 \section{Limite macroscopique}
 
+Nous avons là encore tenter d'appliquer un changement de loi pour simuler l'évolution du prix sur une année en favorisant la probabilité d'obtenir de longue série de hausses ou de baisses. 
+On trace l'évolution du prix pour différentes valeurs du paramètre $\theta$ de la matrice de transition:
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.5]{"Evolution prix -0875"}
+\includegraphics[scale=0.5]{"Evolution prix 0"}
+\includegraphics[scale=0.5]{"Evolution prix 0875"}
+\end{center}
+\end{figure}
 
 
 

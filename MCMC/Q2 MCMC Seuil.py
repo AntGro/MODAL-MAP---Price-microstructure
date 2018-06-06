@@ -158,5 +158,6 @@ while(a[-1] > niveau-1):
 
 a[-1]=niveau-1
 
+a=np.sort(list(set(a)))[::-1]   # on enlève les doublons
 print("Valeur des seuils : {}".format(a))
 

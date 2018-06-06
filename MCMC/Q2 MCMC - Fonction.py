@@ -7,7 +7,7 @@ import time
 ## Q2 Splitting + MCMC --- Fonction
 ###############################################################################
 
-def Q2_MCMC(P0=35, M=int(8e4), display=True, n=int(1e3), ratio=0.1, p=0.7, i=0, T=4*3600, la1=1/660, la2=1/300, N=[1,3], P=[[1/2],[1/4,1/6,1/12]]):
+def Q2_MCMC(P0=35, M=int(8e4), display=True, n=int(1e3), ratio=0.1, p=0.7, i=0, T=4*3600, la=1/300, N=[1,3], P=[[1/2],[1/4,1/6,1/12]]):
     BoundSplit = Q2_MCMC_Seuil(P0, n, ratio, p, i, T, la1, la2, N, P)
     return Q2_MCMC_Body(BoundSplit, P0, M, display, p, i, T, la1, la2, N, P)
 
@@ -141,7 +141,7 @@ def Q2_MCMC_Seuil(P0=35, n=int(1e3), ratio=0.1, p=0.7, i=0, T=4*3600, la1=1/660,
     a[-1] = -1
     
     print("Valeur des seuils : {}".format(a))
-    return list(np.sort(list(set(a)))[::-1])
+    return a 
 #
 #
 #    
@@ -277,14 +277,14 @@ def Q2_MCMC_Body(BoundSplit, P0=35, M=int(8e4), display=True, p=0.7, i=0, T=4*36
     
     if(display):
         plt.figure(1)
-        plt.title("Consistance des estimateurs a chaque niveau pour p = "+ str(p) +" et lambda1 = " + str(la1) + " et lambda2=" + str(la2))
+        plt.title("Consistance des estimateurs a chaque niveau pour p = "+ str(p) +" et lambda = " + str(la1))
         plt.legend(loc="best")
         plt.ylabel("Probabilite conditionnelle au niveau k")
         plt.grid()
         
         
         plt.figure(2)
-        plt.title("Evolution du taux d'acceptation pour p = "+ str(p) +" et lambda1 = " + str(la1) + " et lambda2=" + str(la2))
+        plt.title("Evolution du taux d'acceptation pour p = "+ str(p) +" et lambda = " + str(la1))
         plt.ylabel("Taux d'acceptation")
         plt.legend(loc="best")
         plt.grid()

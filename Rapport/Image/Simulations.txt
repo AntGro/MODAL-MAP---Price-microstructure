@@ -3,12 +3,22 @@ Q1 MCMC IC P0=35, seuil=[24, 17.0, 12.0, 9.0, 6.0, 3.0, 0.0, -1], p=0.7, nAlgo=5
 	IC asymptotique a 95% : +/- 3.68692421777e-09
 	Durée d'exécution 12995.59573173523
 
-Q1 MCMC IC P0=35, seuil=[24, 17.0, 12.0, 9.0, 6.0, 3.0, 0.0, -1], p=0.7, nAlgo=15, M=6e4, i=1 :
-	La proba de ruine estimée est 0.00428684819947
-	IC asymptotique a 95% : +/- 4.87664419203e-05
-	Durée d'exécution 481.0360839366913
+Q1 MCMC IC P0=35, seuil=[15,4, -1], p=0.7, nAlgo=15, M=6e4, i=1 :
+	La proba de ruine estimée est 0.00430763848242
+	IC asymptotique a 95% : +/- 2.07546836474e-05
+	Durée d'exécution 729.9588613510132
 
-Q1 MCMC P0=35, seuil=[24, 17.0, 12.0, 9.0, 6.0, 3.0, 0.0, -1], p=0.7, nAlgo=10, M=7.5e4, i=0 :
+Q1 MCMC  IC P0=35, seuil=[24, 17.0, 12.0, 9.0, 6.0, 3.0, 0.0, -1], p=0.7, nAlgo=10, M=7.5e4, i=0 :
 	La proba de ruine estimée est 3.61777259913e-07
 	IC asymptotique a 95% : +/- 8.30019293627e-09
 	Durée d'exécution 1662.610704421997
+
+Q2 MCMC IC P0=35, seuil=[26,22,18,14,11,8,5,4,1,-1], p=0.7, nAlgo=15, M=6e4, i=0
+	La proba de ruine estimée est 1.7366405948e-12
+	IC asymptotique a 95% : +/- 1.16506777531e-13
+	Durée d'exécution 2352.9314222335815
+
+Q2 MCMC IC P0=35, seuil=[22.0, 14.0, 7.0, 2.0, -1], p=0.7, nAlgo=10, M=6e4, i=1 
+	La proba de ruine estimée est 5.3651669497e-05
+	IC asymptotique a 95% : +/- 1.00291755852e-06
+	Durée d'exécution 2089.9052963256836

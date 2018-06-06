@@ -26,7 +26,7 @@ p = P[i]
 val = np.arange(1,m+1)
 prob = p
 
-n=int(5e3)
+n=int(10)
 
 # paramètre de la matrice de transition
 alpha = -0.875
@@ -116,24 +116,29 @@ def simu(t):
     print("\nDurée d'exécution "+str(time.time()-TempsDepart))
     print ("La proba estimée est " + str(pEst))
     
-#     for i in range(5):
-#         plt.plot(np.arange(N+1),P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[i*N:i*N+N]*JumpSign[i])]))
-#         plt.plot([0,N+1],[niveau,niveau],"r")
-#     plt.show()
+    for i in range(5):
+        TimeJump = np.concatenate([np.arange(1),np.sort(T*np.random.uniform(0,1,size=np.sum(NbrJump[i])))])
+        plt.plot(TimeJump,P0+np.concatenate([np.arange(1),np.cumsum(JumpSizeAbs[interval[i]:interval[i+1]]*JumpSign[i])]))
+        plt.ylabel("Prix")
+        plt.xlabel("Temps (s)")
+        plt.title("Evolution du prix sur 1 an pour theta="+str(t))
+        plt.grid()
+        plt.plot([0,T],[niveau,niveau],"r")
+    plt.show()
     return(pEst)
 
-plt.figure(1)
-theta1=np.linspace(-0.875,0.5,100)
-y1=[simu(th) for th in theta1]
-plt.plot(theta1,y1)
-
-sEst=np.std(minP)
-
-qInf=sps.norm.ppf((1-confiance)/2)
-qSup=sps.norm.ppf((1+confiance)/2)
-
-bInf=pEst-qSup*sEst/np.sqrt(n)
-bSup=pEst-qInf*sEst/np.sqrt(n)
+# plt.figure(1)
+# theta1=np.linspace(-0.875,0.5,100)
+# y1=[simu(th) for th in theta1]
+# plt.plot(theta1,y1)
+# 
+# sEst=np.std(minP)
+# 
+# qInf=sps.norm.ppf((1-confiance)/2)
+# qSup=sps.norm.ppf((1+confiance)/2)
+# 
+# bInf=pEst-qSup*sEst/np.sqrt(n)
+# bSup=pEst-qInf*sEst/np.sqrt(n)
 
 ##
 # q1=1e-4
@@ -160,7 +165,6 @@ bSup=pEst-qInf*sEst/np.sqrt(n)
 # print(distrib[int(q1*n)],distrib[int(q2*n)])
 
 ##Quantile
-
 def process(seuil,t):
         
     #Nombre de sauts sur [0,T], par points de la chaîne

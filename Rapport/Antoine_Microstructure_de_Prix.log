@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.12.31)  5 JUN 2018 19:38
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.12.31)  6 JUN 2018 02:26
 entering extended mode
 **./Antoine_Microstructure_de_Prix.tex
 (Antoine_Microstructure_de_Prix.tex
@@ -1033,7 +1033,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 29--31
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 65--66
+Underfull \hbox (badness 10000) in paragraph at lines 61--62
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 67--68
 
  []
 
@@ -1050,104 +1055,257 @@ Package pdftex.def Info: polytechnique-logohori.pdf used on input line 68.
 atex/polytechnique/resources/polytechnique-filetlongrouge.pdf> <C:/Users/antoin
 e/AppData/Roaming/MiKTeX/2.9/tex/latex/polytechnique/resources/polytechnique-fi
 letcourtbleuclair.pdf>]
-File: polytechnique-filetcourtbleuclair.pdf Graphic file (type pdf)
+Underfull \hbox (badness 10000) in paragraph at lines 68--69
 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 69--70
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 78--79
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 81--82
+
+ []
+
+<Image/"Q1 MCMC".png, id=150, 987.2082pt x 458.9145pt>
+File: Image/"Q1 MCMC".png Graphic file (type png)
+
+<use Image/"Q1 MCMC".png>
+Package pdftex.def Info: Image/"Q1 MCMC".png used on input line 90.
+(pdftex.def)             Requested size: 493.60289pt x 229.45668pt.
+
+Overfull \hbox (9.90602pt too wide) in paragraph at lines 90--91
+ [] 
+ []
+
+
+Overfull \hbox (55.08046pt too wide) in paragraph at lines 94--96
+\T1/lmr/m/n/10.95 lé-gè-re-ment su-pé-rieures au ra-tio ($\OML/lmm/m/it/10.95 r
+ \OT1/lmr/m/n/10.95 = 0\OML/lmm/m/it/10.95 :\OT1/lmr/m/n/10.95 1$\T1/lmr/m/n/10
+.95 ) qui a servi à dé-ter-mi-ner les seuils (ici $\OT1/lmr/m/n/10.95 [24\OML/l
+mm/m/it/10.95 ; \OT1/lmr/m/n/10.95 18\OML/lmm/m/it/10.95 :\OT1/lmr/m/n/10.95 0\
+OML/lmm/m/it/10.95 ; \OT1/lmr/m/n/10.95 13\OML/lmm/m/it/10.95 :\OT1/lmr/m/n/10.
+95 0\OML/lmm/m/it/10.95 ; \OT1/lmr/m/n/10.95 10\OML/lmm/m/it/10.95 :\OT1/lmr/m/
+n/10.95 0\OML/lmm/m/it/10.95 ; \OT1/lmr/m/n/10.95 7\OML/lmm/m/it/10.95 :\OT1/lm
+r/m/n/10.95 0\OML/lmm/m/it/10.95 ; \OT1/lmr/m/n/10.95 4\OML/lmm/m/it/10.95 :\OT
+1/lmr/m/n/10.95 0\OML/lmm/m/it/10.95 ; \OT1/lmr/m/n/10.95 0\OML/lmm/m/it/10.95 
+:\OT1/lmr/m/n/10.95 0\OML/lmm/m/it/10.95 ; \OMS/lmsy/m/n/10.95  \OT1/lmr/m/n/10
+.95 1]$\T1/lmr/m/n/10.95 ). 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 94--96
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 97--98
+
+ []
+
+<Image/"Q1 MCMC IC i0 boxplot".png, id=152, 987.2082pt x 458.9145pt>
+File: Image/"Q1 MCMC IC i0 boxplot".png Graphic file (type png)
+
+<use Image/"Q1 MCMC IC i0 boxplot".png>
+Package pdftex.def Info: Image/"Q1 MCMC IC i0 boxplot".png used on input line 1
+02.
+(pdftex.def)             Requested size: 246.80144pt x 114.72833pt.
+
+<Image/"Q1 MCMC IC i0 precision".png, id=153, 462.528pt x 344.0052pt>
+File: Image/"Q1 MCMC IC i0 precision".png Graphic file (type png)
+
+<use Image/"Q1 MCMC IC i0 precision".png>
+Package pdftex.def Info: Image/"Q1 MCMC IC i0 precision".png used on input line
+ 103.
+(pdftex.def)             Requested size: 185.0079pt x 137.59962pt.
+
+<Image/"Q1 MCMC IC i1 boxplot".png, id=154, 987.2082pt x 458.9145pt>
+File: Image/"Q1 MCMC IC i1 boxplot".png Graphic file (type png)
+
+<use Image/"Q1 MCMC IC i1 boxplot".png>
+Package pdftex.def Info: Image/"Q1 MCMC IC i1 boxplot".png used on input line 1
+04.
+(pdftex.def)             Requested size: 246.80144pt x 114.72833pt.
+
+<Image/"Q1 MCMC IC i1 precision".png, id=155, 462.528pt x 344.0052pt>
+File: Image/"Q1 MCMC IC i1 precision".png Graphic file (type png)
+
+<use Image/"Q1 MCMC IC i1 precision".png>
+Package pdftex.def Info: Image/"Q1 MCMC IC i1 precision".png used on input line
+ 105.
+(pdftex.def)             Requested size: 185.0079pt x 137.59962pt.
+
+Overfull \hbox (51.80893pt too wide) in paragraph at lines 114--125
+ [] 
+ []
+
+File: polytechnique-filetcourtbleuclair.pdf Graphic file (type pdf)
 <use polytechnique-filetcourtbleuclair.pdf>
 Package pdftex.def Info: polytechnique-filetcourtbleuclair.pdf used on input li
-ne 69.
-(pdftex.def)             Requested size: 28.40483pt x 2.16676pt.
-File: polytechnique-filetlongrouge.pdf Graphic file (type pdf)
-
-<use polytechnique-filetlongrouge.pdf>
-Package pdftex.def Info: polytechnique-filetlongrouge.pdf used on input line 91
-.
-(pdftex.def)             Requested size: 124.21074pt x 2.16628pt.
-File: polytechnique-filetcourtbleuclair.pdf Graphic file (type pdf)
-
-<use polytechnique-filetcourtbleuclair.pdf>
-Package pdftex.def Info: polytechnique-filetcourtbleuclair.pdf used on input li
-ne 93.
-(pdftex.def)             Requested size: 28.40483pt x 2.16676pt.
-File: polytechnique-filetcourtbleuclair.pdf Graphic file (type pdf)
-
-<use polytechnique-filetcourtbleuclair.pdf>
-Package pdftex.def Info: polytechnique-filetcourtbleuclair.pdf used on input li
-ne 103.
+ne 129.
 (pdftex.def)             Requested size: 28.40483pt x 2.16676pt.
 File: polytechnique-logohori.pdf Graphic file (type pdf)
  <use polytechnique-logohori.pdf>
-Package pdftex.def Info: polytechnique-logohori.pdf used on input line 108.
+Package pdftex.def Info: polytechnique-logohori.pdf used on input line 131.
 (pdftex.def)             Requested size: 97.76396pt x 42.67912pt.
 
 [3]
-File: polytechnique-filetlongrouge.pdf Graphic file (type pdf)
- <use polytechnique-filetlongrouge.pdf>
-Package pdftex.def Info: polytechnique-filetlongrouge.pdf used on input line 11
-0.
-(pdftex.def)             Requested size: 124.21074pt x 2.16628pt.
-File: polytechnique-filetcourtbleuclair.pdf Graphic file (type pdf)
-
-<use polytechnique-filetcourtbleuclair.pdf>
-Package pdftex.def Info: polytechnique-filetcourtbleuclair.pdf used on input li
-ne 112.
-(pdftex.def)             Requested size: 28.40483pt x 2.16676pt.
-File: polytechnique-filetcourtbleuclair.pdf Graphic file (type pdf)
-
-<use polytechnique-filetcourtbleuclair.pdf>
-Package pdftex.def Info: polytechnique-filetcourtbleuclair.pdf used on input li
-ne 134.
-(pdftex.def)             Requested size: 28.40483pt x 2.16676pt.
-File: polytechnique-filetcourtbleuclair.pdf Graphic file (type pdf)
-
-<use polytechnique-filetcourtbleuclair.pdf>
-Package pdftex.def Info: polytechnique-filetcourtbleuclair.pdf used on input li
-ne 144.
-(pdftex.def)             Requested size: 28.40483pt x 2.16676pt.
+File: polytechnique-logohori.pdf Graphic file (type pdf)
+ <use polytechnique-logohori.pdf>
+Package pdftex.def Info: polytechnique-logohori.pdf used on input line 131.
+(pdftex.def)             Requested size: 97.76396pt x 42.67912pt.
+ [4 <./Image/Q1 MCMC.png> <./Image/Q1 MCMC IC i0 boxplot.png> <./Image/Q1 MCMC 
+IC i0 precision.png> <./Image/Q1 MCMC IC i1 boxplot.png> <./Image/Q1 MCMC IC i1
+ precision.png>]
 File: polytechnique-filetlongrouge.pdf Graphic file (type pdf)
 
 <use polytechnique-filetlongrouge.pdf>
 Package pdftex.def Info: polytechnique-filetlongrouge.pdf used on input line 15
 1.
 (pdftex.def)             Requested size: 124.21074pt x 2.16628pt.
+File: polytechnique-filetcourtbleuclair.pdf Graphic file (type pdf)
+
+<use polytechnique-filetcourtbleuclair.pdf>
+Package pdftex.def Info: polytechnique-filetcourtbleuclair.pdf used on input li
+ne 153.
+(pdftex.def)             Requested size: 28.40483pt x 2.16676pt.
 File: polytechnique-logohori.pdf Graphic file (type pdf)
  <use polytechnique-logohori.pdf>
-Package pdftex.def Info: polytechnique-logohori.pdf used on input line 156.
+Package pdftex.def Info: polytechnique-logohori.pdf used on input line 161.
 (pdftex.def)             Requested size: 97.76396pt x 42.67912pt.
 
-[4]
+[5]
+Underfull \hbox (badness 10000) in paragraph at lines 162--163
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 164--165
+
+ []
+
+<Image/"Q2 MCMC".png, id=174, 987.2082pt x 458.9145pt>
+File: Image/"Q2 MCMC".png Graphic file (type png)
+
+<use Image/"Q2 MCMC".png>
+Package pdftex.def Info: Image/"Q2 MCMC".png used on input line 169.
+(pdftex.def)             Requested size: 493.60289pt x 229.45668pt.
+
+Overfull \hbox (9.90602pt too wide) in paragraph at lines 169--170
+ [] 
+ []
+
+File: polytechnique-filetcourtbleuclair.pdf Graphic file (type pdf)
+<use polytechnique-filetcourtbleuclair.pdf>
+Package pdftex.def Info: polytechnique-filetcourtbleuclair.pdf used on input li
+ne 190.
+(pdftex.def)             Requested size: 28.40483pt x 2.16676pt.
 File: polytechnique-logohori.pdf Graphic file (type pdf)
  <use polytechnique-logohori.pdf>
-Package pdftex.def Info: polytechnique-logohori.pdf used on input line 156.
+Package pdftex.def Info: polytechnique-logohori.pdf used on input line 195.
 (pdftex.def)             Requested size: 97.76396pt x 42.67912pt.
- [5] (Antoine_Microstructure_de_Prix.aux) ) 
+
+[6 <./Image/Q2 MCMC.png>]
+File: polytechnique-filetlongrouge.pdf Graphic file (type pdf)
+ <use polytechnique-filetlongrouge.pdf>
+Package pdftex.def Info: polytechnique-filetlongrouge.pdf used on input line 19
+7.
+(pdftex.def)             Requested size: 124.21074pt x 2.16628pt.
+File: polytechnique-filetcourtbleuclair.pdf Graphic file (type pdf)
+
+<use polytechnique-filetcourtbleuclair.pdf>
+Package pdftex.def Info: polytechnique-filetcourtbleuclair.pdf used on input li
+ne 199.
+(pdftex.def)             Requested size: 28.40483pt x 2.16676pt.
+File: polytechnique-filetcourtbleuclair.pdf Graphic file (type pdf)
+
+<use polytechnique-filetcourtbleuclair.pdf>
+Package pdftex.def Info: polytechnique-filetcourtbleuclair.pdf used on input li
+ne 221.
+(pdftex.def)             Requested size: 28.40483pt x 2.16676pt.
+File: polytechnique-filetcourtbleuclair.pdf Graphic file (type pdf)
+
+<use polytechnique-filetcourtbleuclair.pdf>
+Package pdftex.def Info: polytechnique-filetcourtbleuclair.pdf used on input li
+ne 231.
+(pdftex.def)             Requested size: 28.40483pt x 2.16676pt.
+File: polytechnique-logohori.pdf Graphic file (type pdf)
+ <use polytechnique-logohori.pdf>
+Package pdftex.def Info: polytechnique-logohori.pdf used on input line 236.
+(pdftex.def)             Requested size: 97.76396pt x 42.67912pt.
+
+[7]
+File: polytechnique-filetlongrouge.pdf Graphic file (type pdf)
+ <use polytechnique-filetlongrouge.pdf>
+Package pdftex.def Info: polytechnique-filetlongrouge.pdf used on input line 23
+8.
+(pdftex.def)             Requested size: 124.21074pt x 2.16628pt.
+
+<Image/"Evolution prix -0875".png, id=183, 462.528pt x 344.0052pt>
+File: Image/"Evolution prix -0875".png Graphic file (type png)
+
+<use Image/"Evolution prix -0875".png>
+Package pdftex.def Info: Image/"Evolution prix -0875".png used on input line 24
+5.
+(pdftex.def)             Requested size: 231.26343pt x 172.00217pt.
+
+<Image/"Evolution prix 0".png, id=184, 462.528pt x 344.0052pt>
+File: Image/"Evolution prix 0".png Graphic file (type png)
+
+<use Image/"Evolution prix 0".png>
+Package pdftex.def Info: Image/"Evolution prix 0".png used on input line 246.
+(pdftex.def)             Requested size: 231.26343pt x 172.00217pt.
+
+<Image/"Evolution prix 0875".png, id=185, 462.528pt x 344.0052pt>
+File: Image/"Evolution prix 0875".png Graphic file (type png)
+
+<use Image/"Evolution prix 0875".png>
+Package pdftex.def Info: Image/"Evolution prix 0875".png used on input line 247
+.
+(pdftex.def)             Requested size: 231.26343pt x 172.00217pt.
+File: polytechnique-logohori.pdf Graphic file (type pdf)
+ <use polytechnique-logohori.pdf>
+Package pdftex.def Info: polytechnique-logohori.pdf used on input line 253.
+(pdftex.def)             Requested size: 97.76396pt x 42.67912pt.
+ [8 <./Image/Evolution prix -0875.png> <./Image/Evolution prix 0.png> <./Image/
+Evolution prix 0875.png>] (Antoine_Microstructure_de_Prix.aux) ) 
 Here is how much of TeX's memory you used:
- 6065 strings out of 493323
- 82758 string characters out of 3139059
- 152666 words of memory out of 3000000
- 9428 multiletter control sequences out of 15000+200000
- 71877 words of font info for 74 fonts, out of 3000000 for 9000
+ 6124 strings out of 493323
+ 84345 string characters out of 3139059
+ 157666 words of memory out of 3000000
+ 9470 multiletter control sequences out of 15000+200000
+ 90948 words of font info for 80 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 39i,9n,36p,584b,457s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiKTeX 2.9/fonts/e
+ 39i,10n,48p,811b,461s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Fil
+es/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}{C:/Program Files/MiKTeX 2.9/fonts/e
 nc/dvips/lm/lm-rm.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathsy
 .enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Program 
 Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathex.enc}{C:/Program Files/MiKTeX 2.9/
-fonts/enc/dvips/lm/lm-ec.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm
--ts1.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmcsc10.pfb><C:/Pro
-gram Files/MiKTeX 2.9/fonts/type1/public/lm/lmex10.pfb><C:/Program Files/MiKTeX
- 2.9/fonts/type1/public/lm/lmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/
-public/lm/lmmi6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmmi8.pf
-b><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr10.pfb><C:/Program File
-s/MiKTeX 2.9/fonts/type1/public/lm/lmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts
-/type1/public/lm/lmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lm
-r8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmss12.pfb><C:/Progra
-m Files/MiKTeX 2.9/fonts/type1/public/lm/lmssbx10.pfb><C:/Program Files/MiKTeX 
-2.9/fonts/type1/public/lm/lmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
-ublic/lm/lmsy6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy8.pfb
-><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Antoine_Microstructure_de_Prix.pdf (5 pages, 1746549 bytes).
+fonts/enc/dvips/lm/lm-ts1.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/l
+m/lmbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmcsc10.pfb><C:
+/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmex10.pfb><C:/Program Files/Mi
+KTeX 2.9/fonts/type1/public/lm/lmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
+pe1/public/lm/lmmi6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmmi
+8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr10.pfb><C:/Program 
+Files/MiKTeX 2.9/fonts/type1/public/lm/lmr12.pfb><C:/Program Files/MiKTeX 2.9/f
+onts/type1/public/lm/lmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/l
+m/lmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmri10.pfb><C:/Pr
+ogram Files/MiKTeX 2.9/fonts/type1/public/lm/lmss12.pfb><C:/Program Files/MiKTe
+X 2.9/fonts/type1/public/lm/lmssbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/typ
+e1/public/lm/lmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy
+6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy8.pfb><C:/Program 
+Files/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on Antoine_Microstructure_de_Prix.pdf (8 pages, 2248857 bytes).
 PDF statistics:
- 214 PDF objects out of 1000 (max. 8388607)
+ 254 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 31 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 76 words of extra memory for PDF output out of 10000 (max. 10000000)
 
